@@ -1,7 +1,14 @@
 <template>
   <div id="app">
-    <awaited :action="getData" store-data="cars">
-      <template #default="{ cars }">
+    <div style="height: 800px;"></div>
+    <awaited action="getData" store-data="cars" lazy>
+      <template #pending>
+        <h1>Loading...</h1>
+      </template>
+      <template #error>
+        <h1>Error happend</h1>
+      </template>
+      <template #default="{ data: cars }">
         <ul>
           <li v-for="car in cars" :key="car.name">
             {{ car.name }}
@@ -9,7 +16,6 @@
         </ul>
       </template>
     </awaited>
-    <button @click="isFord = true">Mersedes -> Ford</button>
   </div>
 </template>
 
@@ -20,14 +26,6 @@ export default {
   name: 'app',
   components: {
     awaited
-  },
-  data: () => ({
-    isFord: false
-  }),
-  computed: {
-    getData() {
-      return this.$store.dispatch('getData', this.isFord)
-    }
   }
 }
 </script>

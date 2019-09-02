@@ -14,12 +14,13 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async getData({ commit }, isFord) {
+    async getData({ commit }) {
       await delay(2000)
+      // throw Error(`Can't load data!`)
       const data = [
         { name: 'BMW' },
         { name: 'Audi' },
-        { name: isFord ? 'Ford' : 'Mersedes' }
+        { name: 'Mersedes' }
       ]
       commit('setCars', data)
       return data
