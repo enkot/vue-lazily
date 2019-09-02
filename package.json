@@ -1,7 +1,7 @@
 {
   "name": "vue-awaited",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
     "build": "bili src/index.js"

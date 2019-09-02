@@ -20,7 +20,9 @@ export default {
     target: null
   }),
   mounted() {
-    if (!this.action) return
+    assert(this.$store, `Vuex doesn't installed.`)
+    assert(this.action, `You should pass "action" prop.`)
+  
     this.target = this.$refs.target
 
     if (this.lazy)
@@ -78,5 +80,11 @@ function getSlot(vm, h, name, data) {
         ref: 'target'
       })
     ])
+  }
+}
+
+function assert(condition, message) {
+  if (!condition) {
+    throw new Error(`[vue-awaited] ${message}`)
   }
 }
