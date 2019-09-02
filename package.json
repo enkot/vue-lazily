@@ -1,0 +1,13 @@
+{
+  "name": "vue-awaited",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "bili src/index.js"
+  },
+  "devDependencies": {
+    "bili": "^4.8.1",
+    "vuex": "^3.1.1"
+  }
+}
