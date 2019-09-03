@@ -20,7 +20,7 @@ export default new Vuex.Store({
       const data = [
         { name: 'BMW' },
         { name: 'Audi' },
-        { name: 'Mersedes' }
+        { name: 'Mercedes-Benz' }
       ]
       commit('setCars', data)
       return data

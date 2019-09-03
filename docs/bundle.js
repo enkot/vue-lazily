@@ -8429,7 +8429,7 @@
   var awaited = {
     props: {
       action: {
-        type: String,
+        type: [String, Promise, Function],
         required: false
       },
       storeData: {
@@ -8449,7 +8449,7 @@
     }),
     mounted() {
       assert(this.$store, `Vuex doesn't installed.`);
-      assert(this.action, `You should pass "action" prop.`);
+      assert(this.action, `You should pass an "action" prop.`);
     
       this.target = this.$refs.target;
 
@@ -8466,7 +8466,12 @@
         this.resolved = false;
 
         try {
-          await this.$store.dispatch(this.action);
+          if (typeof this.action === 'string')
+            await this.$store.dispatch(this.action);
+          else if (typeof this.action === 'function')
+            await this.action();
+          else if (isPromise$1(this.action))
+            await this.action;
         } catch(error) {
           this.error = error;
         } finally {
@@ -8502,13 +8507,14 @@
 
   function getSlot(vm, h, name, data) {
     if (vm.$scopedSlots[name]) {
-      return h('div', [
-        vm.$scopedSlots[name]({ data }),
-        h('div', {
-          ref: 'target'
-        })
-      ])
+      return h('div', {
+        ref: 'target'
+      }, vm.$scopedSlots[name]({ data }))
     }
+  }
+
+  function isPromise$1(value) {
+    return value && typeof value.then === 'function' && typeof value.catch === 'function'
   }
 
   function assert(condition, message) {
@@ -8523,6 +8529,11 @@
     name: 'app',
     components: {
       awaited
+    },
+    methods: {
+      async getData() {
+        await this.$store.dispatch('getData');
+      }
     }
   };
 
@@ -8676,24 +8687,27 @@
     var _c = _vm._self._c || _h;
     return _c(
       "div",
-      { attrs: { id: "app" } },
+      { staticClass: "app", attrs: { id: "app" } },
       [
-        _c("div", { staticStyle: { height: "800px" } }),
+        _c("h1", [_vm._v("Scroll down ⬇")]),
+        _vm._v(" "),
+        _c("div", { staticStyle: { height: "1000px" } }),
         _vm._v(" "),
         _c("awaited", {
+          staticClass: "content",
           attrs: { action: "getData", "store-data": "cars", lazy: "" },
           scopedSlots: _vm._u([
             {
               key: "pending",
               fn: function() {
-                return [_c("h1", [_vm._v("Loading...")])]
+                return [_c("h2", [_vm._v("Loading...")])]
               },
               proxy: true
             },
             {
               key: "error",
               fn: function() {
-                return [_c("h1", [_vm._v("Error happend")])]
+                return [_c("h2", [_vm._v("Error happend")])]
               },
               proxy: true
             },
@@ -8706,7 +8720,7 @@
                     "ul",
                     _vm._l(cars, function(car) {
                       return _c("li", { key: car.name }, [
-                        _vm._v("\n          " + _vm._s(car.name) + "\n        ")
+                        _c("h3", [_vm._v(_vm._s(car.name))])
                       ])
                     }),
                     0
@@ -8726,7 +8740,7 @@
     /* style */
     const __vue_inject_styles__ = function (inject) {
       if (!inject) return
-      inject("data-v-275010b2_0", { source: "\n#app {\n  font-family: 'Avenir', Helvetica, Arial, sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  text-align: center;\n  color: #2c3e50;\n  margin-top: 60px;\n}\n", map: {"version":3,"sources":["/Users/tarasbatenkov/Projects/vue-awaited/example/App.vue"],"names":[],"mappings":";AAiCA;EACA,mDAAA;EACA,mCAAA;EACA,kCAAA;EACA,kBAAA;EACA,cAAA;EACA,gBAAA;AACA","file":"App.vue","sourcesContent":["<template>\n  <div id=\"app\">\n    <div style=\"height: 800px;\"></div>\n    <awaited action=\"getData\" store-data=\"cars\" lazy>\n      <template #pending>\n        <h1>Loading...</h1>\n      </template>\n      <template #error>\n        <h1>Error happend</h1>\n      </template>\n      <template #default=\"{ data: cars }\">\n        <ul>\n          <li v-for=\"car in cars\" :key=\"car.name\">\n            {{ car.name }}\n          </li>\n        </ul>\n      </template>\n    </awaited>\n  </div>\n</template>\n\n<script>\nimport { awaited } from '../src'\n\nexport default {\n  name: 'app',\n  components: {\n    awaited\n  }\n}\n</script>\n\n<style>\n#app {\n  font-family: 'Avenir', Helvetica, Arial, sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  text-align: center;\n  color: #2c3e50;\n  margin-top: 60px;\n}\n</style>\n"]}, media: undefined });
+      inject("data-v-07b6a811_0", { source: "\n.app {\n  font-family: 'Avenir', Helvetica, Arial, sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  text-align: center;\n  color: #2c3e50;\n  margin-top: 60px;\n}\n.content {\n  padding: 40px 0;\n}\n", map: {"version":3,"sources":["/Users/tarasbatenkov/Projects/vue-awaited/example/App.vue"],"names":[],"mappings":";AAuCA;EACA,mDAAA;EACA,mCAAA;EACA,kCAAA;EACA,kBAAA;EACA,cAAA;EACA,gBAAA;AACA;AACA;EACA,eAAA;AACA","file":"App.vue","sourcesContent":["<template>\n  <div id=\"app\" class=\"app\">\n    <h1>Scroll down ⬇</h1>\n    <div style=\"height: 1000px;\"></div>\n    <awaited action=\"getData\" store-data=\"cars\" lazy class=\"content\">\n      <template #pending>\n        <h2>Loading...</h2>\n      </template>\n      <template #error>\n        <h2>Error happend</h2>\n      </template>\n      <template #default=\"{ data: cars }\">\n        <ul>\n          <li v-for=\"car in cars\" :key=\"car.name\">\n            <h3>{{ car.name }}</h3>\n          </li>\n        </ul>\n      </template>\n    </awaited>\n  </div>\n</template>\n\n<script>\nimport { awaited } from '../src'\n\nexport default {\n  name: 'app',\n  components: {\n    awaited\n  },\n  methods: {\n    async getData() {\n      await this.$store.dispatch('getData')\n    }\n  }\n}\n</script>\n\n<style>\n.app {\n  font-family: 'Avenir', Helvetica, Arial, sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  text-align: center;\n  color: #2c3e50;\n  margin-top: 60px;\n}\n.content {\n  padding: 40px 0;\n}\n</style>"]}, media: undefined });
 
     };
     /* scoped */
@@ -8834,7 +8848,7 @@
     return obj !== null && typeof obj === 'object'
   }
 
-  function isPromise$1 (val) {
+  function isPromise$2 (val) {
     return val && typeof val.then === 'function'
   }
 
@@ -9489,7 +9503,7 @@
         rootGetters: store.getters,
         rootState: store.state
       }, payload, cb);
-      if (!isPromise$1(res)) {
+      if (!isPromise$2(res)) {
         res = Promise.resolve(res);
       }
       if (store._devtoolHook) {
@@ -9784,13 +9798,15 @@
         const data = [
           { name: 'BMW' },
           { name: 'Audi' },
-          { name: 'Mersedes' }
+          { name: 'Mercedes-Benz' }
         ];
         commit('setCars', data);
         return data
       }
     }
   });
+
+  // import './main.css'
 
   Vue.config.productionTip = false;
 

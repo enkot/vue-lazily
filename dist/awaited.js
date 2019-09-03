@@ -1,7 +1,7 @@
 var awaited = {
   props: {
     action: {
-      type: String,
+      type: [String, Promise, Function],
       required: false
     },
     storeData: {
@@ -21,7 +21,7 @@ var awaited = {
   }),
   mounted() {
     assert(this.$store, `Vuex doesn't installed.`);
-    assert(this.action, `You should pass "action" prop.`);
+    assert(this.action, `You should pass an "action" prop.`);
   
     this.target = this.$refs.target;
 
@@ -38,7 +38,12 @@ var awaited = {
       this.resolved = false;
 
       try {
-        await this.$store.dispatch(this.action);
+        if (typeof this.action === 'string')
+          await this.$store.dispatch(this.action);
+        else if (typeof this.action === 'function')
+          await this.action();
+        else if (isPromise(this.action))
+          await this.action;
       } catch(error) {
         this.error = error;
       } finally {
@@ -74,13 +79,14 @@ var awaited = {
 
 function getSlot(vm, h, name, data) {
   if (vm.$scopedSlots[name]) {
-    return h('div', [
-      vm.$scopedSlots[name]({ data }),
-      h('div', {
-        ref: 'target'
-      })
-    ])
+    return h('div', {
+      ref: 'target'
+    }, vm.$scopedSlots[name]({ data }))
   }
+}
+
+function isPromise(value) {
+  return value && typeof value.then === 'function' && typeof value.catch === 'function'
 }
 
 function assert(condition, message) {

@@ -1,17 +1,18 @@
 <template>
-  <div id="app">
-    <div style="height: 800px;"></div>
-    <awaited action="getData" store-data="cars" lazy>
+  <div id="app" class="app">
+    <h1>Scroll down ⬇</h1>
+    <div style="height: 1000px;"></div>
+    <awaited action="getData" store-data="cars" lazy class="content">
       <template #pending>
-        <h1>Loading...</h1>
+        <h2>Loading...</h2>
       </template>
       <template #error>
-        <h1>Error happend</h1>
+        <h2>Error happend</h2>
       </template>
       <template #default="{ data: cars }">
         <ul>
           <li v-for="car in cars" :key="car.name">
-            {{ car.name }}
+            <h3>{{ car.name }}</h3>
           </li>
         </ul>
       </template>
@@ -26,17 +27,25 @@ export default {
   name: 'app',
   components: {
     awaited
+  },
+  methods: {
+    async getData() {
+      await this.$store.dispatch('getData')
+    }
   }
 }
 </script>
 
 <style>
-#app {
+.app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.content {
+  padding: 40px 0;
 }
 </style>
