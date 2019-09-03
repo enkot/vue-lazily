@@ -8,7 +8,7 @@ export default [
     input: 'src/index.js',
     output: {
       format: 'esm',
-      file: 'dist/awaited.js'
+      file: 'dist/index.js'
     },
     plugins: [
       vue()

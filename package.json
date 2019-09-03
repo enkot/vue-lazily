@@ -4,6 +4,7 @@
   "version": "1.0.4",
   "main": "dist/index.js",
   "license": "MIT",
+  "homepage": "https://github.com/enkot/vue-awaited#readme",
   "scripts": {
     "build": "rollup -c"
   },
@@ -17,6 +18,5 @@
     "vue": "^2.6.10",
     "vue-template-compiler": "^2.6.10",
     "vuex": "^3.1.1"
-  },
-  "homepage": "https://github.com/enkot/vue-awaited#readme"
+  }
 }

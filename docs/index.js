@@ -9710,15 +9710,18 @@ var store = new index_esm.Store({
   },
   actions: {
     async getData({ commit }) {
-      await delay(1000);
-      // throw Error(`Can't load data!`)
-      const characters = await fetch('https://rickandmortyapi.com/api/character/1,2')
+      await delay(2000);
+      const characters = await fetchData('https://rickandmortyapi.com/api/character/1,2')
         .then(response => response.json());
       commit('setTitle', 'Main Characters');
       commit('setCharacters', characters);
     }
   }
 });
+
+async function fetchData(url) {
+  return await fetch(url).then(response => response.json())
+}
 
 Vue.config.productionTip = false;
 
