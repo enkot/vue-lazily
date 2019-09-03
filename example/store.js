@@ -1,29 +1,28 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { delay } from './utils'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    cars: []
+    title: null,
+    characters: []
   },
   mutations: {
-    setCars(state, cars) {
-      state.cars = cars
+    setTitle(state, title) {
+      state.title = title
+    },
+    setCharacters(state, characters) {
+      state.characters = characters
     }
   },
   actions: {
     async getData({ commit }) {
-      await delay(2000)
       // throw Error(`Can't load data!`)
-      const data = [
-        { name: 'BMW' },
-        { name: 'Audi' },
-        { name: 'Mercedes-Benz' }
-      ]
-      commit('setCars', data)
-      return data
+      const characters = await fetch('https://rickandmortyapi.com/api/character/1,2')
+        .then(response => response.json())
+      commit('setTitle', 'Main Characters')
+      commit('setCharacters', characters)
     }
   }
 })

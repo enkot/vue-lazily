@@ -5,7 +5,7 @@ var awaited = {
       required: false
     },
     storeData: {
-      type: String,
+      type: [String, Array],
       required: false
     },
     lazy: {
@@ -63,17 +63,23 @@ var awaited = {
     }
   },
   render(h) {
-    const key = this.storeData;
+    let data;
+
+    if (Array.isArray(this.storeData)) {
+      data = this.storeData.map((key) => this.$store.state[key]);
+    } else {
+      data = this.$store.state[this.storeData];
+    }
 
     if (this.error) {
-      return getSlot(this, h, 'error', this.error)
+      return getSlot(this, h, 'error', { error: this.error })
     }
 
     if (this.resolved) {
-      return getSlot(this, h, 'default', this.$store.state[key])
+      return getSlot(this, h, 'default', { data })
     }
 
-    return getSlot(this, h, 'pending', this.$store.state[key])
+    return getSlot(this, h, 'pending', { data })
   }
 };
 
@@ -81,7 +87,7 @@ function getSlot(vm, h, name, data) {
   if (vm.$scopedSlots[name]) {
     return h('div', {
       ref: 'target'
-    }, vm.$scopedSlots[name]({ data }))
+    }, vm.$scopedSlots[name](data))
   }
 }
 
@@ -95,7 +101,48 @@ function assert(condition, message) {
   }
 }
 
+function awaitedComponent({
+  asyncComponent,
+  loading,
+  ...rest
+}) {
+  let resolveComponent;
+
+  return () => ({
+    // resolve a component eventually.
+    component: new Promise((resolve) => {
+      resolveComponent = resolve;
+    }),
+    loading: {
+      async mounted() {
+        // if `IntersectionObserver` is not supported.
+        if (!('IntersectionObserver' in window)) {
+          asyncComponent().then(resolveComponent);
+          return
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+          // use `intersectionRatio` instead of `isIntersecting`
+          // https://github.com/w3c/IntersectionObserver/issues/211
+          if (entries[0].intersectionRatio <= 0) return
+
+          // cleanup the observer
+          observer.unobserve(this.$el);
+
+          asyncComponent().then(resolveComponent);
+        });
+
+        observer.observe(this.$el);
+      },
+      render(h) {
+        return loading || h('div')
+      },
+    },
+    ...rest
+  })
+}
+
 var index = Vue => Vue.component('awaited', awaited);
 
 export default index;
-export { awaited };
+export { awaited, awaitedComponent };

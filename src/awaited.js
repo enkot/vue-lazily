@@ -5,7 +5,7 @@ export default {
       required: false
     },
     storeData: {
-      type: String,
+      type: [String, Array],
       required: false
     },
     lazy: {
@@ -63,17 +63,23 @@ export default {
     }
   },
   render(h) {
-    const key = this.storeData
+    let data
+
+    if (Array.isArray(this.storeData)) {
+      data = this.storeData.map((key) => this.$store.state[key])
+    } else {
+      data = this.$store.state[this.storeData]
+    }
 
     if (this.error) {
-      return getSlot(this, h, 'error', this.error)
+      return getSlot(this, h, 'error', { error: this.error })
     }
 
     if (this.resolved) {
-      return getSlot(this, h, 'default', this.$store.state[key])
+      return getSlot(this, h, 'default', { data })
     }
 
-    return getSlot(this, h, 'pending', this.$store.state[key])
+    return getSlot(this, h, 'pending', { data })
   }
 }
 
@@ -81,7 +87,7 @@ function getSlot(vm, h, name, data) {
   if (vm.$scopedSlots[name]) {
     return h('div', {
       ref: 'target'
-    }, vm.$scopedSlots[name]({ data }))
+    }, vm.$scopedSlots[name](data))
   }
 }
 

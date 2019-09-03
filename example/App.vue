@@ -1,32 +1,33 @@
 <template>
   <div id="app" class="app">
     <h1>Scroll down ⬇</h1>
+    <p>Check the "Network" tab to see when data and component will be loaded.</p>
     <div style="height: 1000px;"></div>
-    <awaited action="getData" store-data="cars" lazy class="content">
+    <awaited action="getData" :store-data="['characters', 'title']" lazy class="content">
       <template #pending>
         <h2>Loading...</h2>
       </template>
       <template #error>
         <h2>Error happend</h2>
       </template>
-      <template #default="{ data: cars }">
-        <ul>
-          <li v-for="car in cars" :key="car.name">
-            <h3>{{ car.name }}</h3>
-          </li>
-        </ul>
+      <template #default="{ data: [characters, title] }">
+        <h2>{{ title }}</h2>
+        <Characters :characters="characters" />
       </template>
     </awaited>
   </div>
 </template>
 
 <script>
-import { awaited } from '../src'
+import { awaited, awaitedComponent } from '../src'
 
 export default {
   name: 'app',
   components: {
-    awaited
+    awaited,
+    Characters: awaitedComponent({
+      asyncComponent: () => import('./Characters.vue')
+    })
   },
   methods: {
     async getData() {

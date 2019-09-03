@@ -16,10 +16,13 @@ export default [
   },
   {
     input: 'example/index.js',
-    output: {
-      format: 'umd',
-      file: 'docs/bundle.js'
-    },
+    output: [
+      {
+        format: 'es',
+        dir: 'docs/',
+        sourcemap: true
+      }
+    ],
     plugins: [
       resolve(),
       commonjs(),
@@ -28,5 +31,5 @@ export default [
         'process.env.NODE_ENV': JSON.stringify('development')
       })
     ]
-  }
+  },
 ]
