@@ -9685,6 +9685,14 @@ var index_esm = {
   createNamespacedHelpers: createNamespacedHelpers
 };
 
+const delay = (ms) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, ms);
+  })
+};
+
 Vue.use(index_esm);
 
 var store = new index_esm.Store({
@@ -9702,6 +9710,7 @@ var store = new index_esm.Store({
   },
   actions: {
     async getData({ commit }) {
+      await delay(1000);
       // throw Error(`Can't load data!`)
       const characters = await fetch('https://rickandmortyapi.com/api/character/1,2')
         .then(response => response.json());
@@ -9717,4 +9726,3 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount("#app");
-//# sourceMappingURL=index.js.map

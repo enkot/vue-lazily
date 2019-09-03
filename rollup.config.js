@@ -19,8 +19,7 @@ export default [
     output: [
       {
         format: 'es',
-        dir: 'docs/',
-        sourcemap: true
+        dir: 'docs/'
       }
     ],
     plugins: [

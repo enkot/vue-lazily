@@ -1,6 +1,7 @@
 {
   "name": "vue-awaited",
-  "version": "1.0.3",
+  "description": "Renderless data component with lazy-load.",
+  "version": "1.0.4",
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {

@@ -65,4 +65,3 @@ __vue_render__._withStripped = true;
   );
 
 export default Characters;
-//# sourceMappingURL=Characters-2e57b86f.js.map
