@@ -9710,9 +9710,8 @@ var store = new index_esm.Store({
   },
   actions: {
     async getData({ commit }) {
-      await delay(2000);
-      const characters = await fetchData('https://rickandmortyapi.com/api/character/1,2')
-        .then(response => response.json());
+      await delay(1500);
+      const characters = await fetchData('https://rickandmortyapi.com/api/character/1,2');
       commit('setTitle', 'Main Characters');
       commit('setCharacters', characters);
     }

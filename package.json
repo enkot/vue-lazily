@@ -1,7 +1,7 @@
 {
   "name": "vue-awaited",
   "description": "Renderless data component with lazy-load.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "dist/index.js",
   "license": "MIT",
   "homepage": "https://github.com/enkot/vue-awaited#readme",
