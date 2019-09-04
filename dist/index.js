@@ -1,3 +1,7 @@
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
 var awaited = {
   props: {
     action: {
@@ -67,12 +71,14 @@ var awaited = {
     }
   },
   render(h) {
-    let data;
+    let data = null;
 
-    if (Array.isArray(this.storeData)) {
-      data = this.storeData.map((key) => this.$store.state[key]);
-    } else {
-      data = this.$store.state[this.storeData];
+    if (this.storeData) {
+      if (Array.isArray(this.storeData)) {
+        data = this.storeData.map((key) => this.$store.state[key]);
+      } else {
+        data = this.$store.state[this.storeData];
+      }
     }
 
     if (this.error) {
@@ -88,11 +94,11 @@ var awaited = {
 };
 
 function getSlot(vm, h, name, data) {
-  if (vm.$scopedSlots[name]) {
-    return h('div', {
-      ref: 'target'
-    }, vm.$scopedSlots[name](data))
-  }
+  const scopedSlot = vm.$scopedSlots[name];
+
+  return h('div', {
+    ref: 'target'
+  }, scopedSlot ? scopedSlot(data) : [])
 }
 
 function isPromise(value) {
@@ -148,5 +154,6 @@ function awaitedComponent({
 
 var index = Vue => Vue.component('awaited', awaited);
 
-export default index;
-export { awaited, awaitedComponent };
+exports.awaited = awaited;
+exports.awaitedComponent = awaitedComponent;
+exports.default = index;

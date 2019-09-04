@@ -8492,12 +8492,14 @@ var awaited = {
     }
   },
   render(h) {
-    let data;
+    let data = null;
 
-    if (Array.isArray(this.storeData)) {
-      data = this.storeData.map((key) => this.$store.state[key]);
-    } else {
-      data = this.$store.state[this.storeData];
+    if (this.storeData) {
+      if (Array.isArray(this.storeData)) {
+        data = this.storeData.map((key) => this.$store.state[key]);
+      } else {
+        data = this.$store.state[this.storeData];
+      }
     }
 
     if (this.error) {
@@ -8513,11 +8515,11 @@ var awaited = {
 };
 
 function getSlot(vm, h, name, data) {
-  if (vm.$scopedSlots[name]) {
-    return h('div', {
-      ref: 'target'
-    }, vm.$scopedSlots[name](data))
-  }
+  const scopedSlot = vm.$scopedSlots[name];
+
+  return h('div', {
+    ref: 'target'
+  }, scopedSlot ? scopedSlot(data) : [])
 }
 
 function isPromise$1(value) {
