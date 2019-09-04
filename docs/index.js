@@ -8446,7 +8446,6 @@ var awaited = {
   }),
   mounted() {
     assert(this.$store, `Vuex doesn't installed.`);
-    assert(this.action, `You should pass an "action" prop.`);
   
     this.target = this.$refs.target;
 
@@ -8460,6 +8459,11 @@ var awaited = {
   },
   methods: {
     async run() {
+      if (!this.action) {
+        this.resolved = true;
+        return
+      }
+
       this.resolved = false;
 
       try {
