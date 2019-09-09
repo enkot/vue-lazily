@@ -8423,6 +8423,127 @@ if (inBrowser) {
   }, 0);
 }
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(source, true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(source).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+
+  return target;
+}
+
+function _objectWithoutProperties(source, excluded) {
+  if (source == null) return {};
+
+  var target = _objectWithoutPropertiesLoose(source, excluded);
+
+  var key, i;
+
+  if (Object.getOwnPropertySymbols) {
+    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+
+    for (i = 0; i < sourceSymbolKeys.length; i++) {
+      key = sourceSymbolKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      target[key] = source[key];
+    }
+  }
+
+  return target;
+}
+
 var awaited = {
   props: {
     action: {
@@ -8438,139 +8559,234 @@ var awaited = {
       default: false
     }
   },
-  data: () => ({
-    resolved: false,
-    error: null,
-    observer: null,
-    target: null
-  }),
-  mounted() {
-    assert(this.$store, `Vuex doesn't installed.`);
-  
-    this.target = this.$refs.target;
-
-    if (this.lazy)
-      this.observe();
-    else
-      this.run();
+  data: function data() {
+    return {
+      resolved: false,
+      error: null,
+      observer: null,
+      target: null
+    };
   },
-  destroyed() {
+  mounted: function mounted() {
+    assert(this.$store, "Vuex doesn't installed.");
+    this.target = this.$refs.target;
+    if (this.lazy) this.observe();else this.run();
+  },
+  destroyed: function destroyed() {
     this.unobserve();
   },
   methods: {
-    async run() {
-      if (!this.action) {
-        this.resolved = true;
-        return
+    run: function () {
+      var _run = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee() {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (this.action) {
+                  _context.next = 3;
+                  break;
+                }
+
+                this.resolved = true;
+                return _context.abrupt("return");
+
+              case 3:
+                this.resolved = false;
+                _context.prev = 4;
+
+                if (!(typeof this.action === 'string')) {
+                  _context.next = 10;
+                  break;
+                }
+
+                _context.next = 8;
+                return this.$store.dispatch(this.action);
+
+              case 8:
+                _context.next = 18;
+                break;
+
+              case 10:
+                if (!(typeof this.action === 'function')) {
+                  _context.next = 15;
+                  break;
+                }
+
+                _context.next = 13;
+                return this.action();
+
+              case 13:
+                _context.next = 18;
+                break;
+
+              case 15:
+                if (!isPromise$1(this.action)) {
+                  _context.next = 18;
+                  break;
+                }
+
+                _context.next = 18;
+                return this.action;
+
+              case 18:
+                _context.next = 23;
+                break;
+
+              case 20:
+                _context.prev = 20;
+                _context.t0 = _context["catch"](4);
+                this.error = _context.t0;
+
+              case 23:
+                _context.prev = 23;
+                this.resolved = true;
+                return _context.finish(23);
+
+              case 26:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[4, 20, 23, 26]]);
+      }));
+
+      function run() {
+        return _run.apply(this, arguments);
       }
 
-      this.resolved = false;
+      return run;
+    }(),
+    observe: function observe() {
+      var _this = this;
 
-      try {
-        if (typeof this.action === 'string')
-          await this.$store.dispatch(this.action);
-        else if (typeof this.action === 'function')
-          await this.action();
-        else if (isPromise$1(this.action))
-          await this.action;
-      } catch(error) {
-        this.error = error;
-      } finally {
-        this.resolved = true;
-      }
-    },
-    observe() {
-      this.observer = new IntersectionObserver((entries) => {
-        if (entries[0].intersectionRatio <= 0) return
-        this.unobserve();
-        this.run();
+      this.observer = new IntersectionObserver(function (entries) {
+        if (entries[0].intersectionRatio <= 0) return;
+
+        _this.unobserve();
+
+        _this.run();
       });
       this.observer.observe(this.target);
     },
-    unobserve() {
+    unobserve: function unobserve() {
       this.observer.unobserve(this.target);
     }
   },
-  render(h) {
-    let data = null;
+  render: function render(h) {
+    var _this2 = this;
+
+    var data = null;
 
     if (this.storeData) {
       if (Array.isArray(this.storeData)) {
-        data = this.storeData.map((key) => this.$store.state[key]);
+        data = this.storeData.map(function (key) {
+          return _this2.$store.state[key];
+        });
       } else {
         data = this.$store.state[this.storeData];
       }
     }
 
     if (this.error) {
-      return getSlot(this, h, 'error', { error: this.error })
+      return getSlot(this, h, 'error', {
+        error: this.error
+      });
     }
 
     if (this.resolved) {
-      return getSlot(this, h, 'default', { data })
+      return getSlot(this, h, 'default', {
+        data: data
+      });
     }
 
-    return getSlot(this, h, 'pending', { data })
+    return getSlot(this, h, 'pending', {
+      data: data
+    });
   }
 };
 
 function getSlot(vm, h, name, data) {
-  const scopedSlot = vm.$scopedSlots[name];
-
+  var scopedSlot = vm.$scopedSlots[name];
   return h('div', {
     ref: 'target'
-  }, scopedSlot ? scopedSlot(data) : [])
+  }, scopedSlot ? scopedSlot(data) : []);
 }
 
 function isPromise$1(value) {
-  return value && typeof value.then === 'function' && typeof value.catch === 'function'
+  return value && typeof value.then === 'function' && typeof value.catch === 'function';
 }
 
 function assert(condition, message) {
   if (!condition) {
-    throw new Error(`[vue-awaited] ${message}`)
+    throw new Error("[vue-awaited] ".concat(message));
   }
 }
 
-function awaitedComponent({
-  asyncComponent,
-  loading,
-  ...rest
-}) {
-  let resolveComponent;
+function awaitedComponent (_ref) {
+  var asyncComponent = _ref.asyncComponent,
+      loading = _ref.loading,
+      rest = _objectWithoutProperties(_ref, ["asyncComponent", "loading"]);
 
-  return () => ({
-    // resolve a component eventually.
-    component: new Promise((resolve) => {
-      resolveComponent = resolve;
-    }),
-    loading: {
-      async mounted() {
-        // if `IntersectionObserver` is not supported.
-        if (!('IntersectionObserver' in window)) {
-          asyncComponent().then(resolveComponent);
-          return
+  var resolveComponent;
+  return function () {
+    return _objectSpread2({
+      // resolve a component eventually.
+      component: new Promise(function (resolve) {
+        resolveComponent = resolve;
+      }),
+      loading: {
+        mounted: function () {
+          var _mounted = _asyncToGenerator(
+          /*#__PURE__*/
+          regeneratorRuntime.mark(function _callee() {
+            var _this = this;
+
+            var observer;
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+              while (1) {
+                switch (_context.prev = _context.next) {
+                  case 0:
+                    if ('IntersectionObserver' in window) {
+                      _context.next = 3;
+                      break;
+                    }
+
+                    asyncComponent().then(resolveComponent);
+                    return _context.abrupt("return");
+
+                  case 3:
+                    observer = new IntersectionObserver(function (entries) {
+                      // use `intersectionRatio` instead of `isIntersecting`
+                      // https://github.com/w3c/IntersectionObserver/issues/211
+                      if (entries[0].intersectionRatio <= 0) return; // cleanup the observer
+
+                      observer.unobserve(_this.$el);
+                      asyncComponent().then(resolveComponent);
+                    });
+                    observer.observe(this.$el);
+
+                  case 5:
+                  case "end":
+                    return _context.stop();
+                }
+              }
+            }, _callee, this);
+          }));
+
+          function mounted() {
+            return _mounted.apply(this, arguments);
+          }
+
+          return mounted;
+        }(),
+        render: function render(h) {
+          return loading || h('div');
         }
-
-        const observer = new IntersectionObserver((entries) => {
-          // use `intersectionRatio` instead of `isIntersecting`
-          // https://github.com/w3c/IntersectionObserver/issues/211
-          if (entries[0].intersectionRatio <= 0) return
-
-          // cleanup the observer
-          observer.unobserve(this.$el);
-
-          asyncComponent().then(resolveComponent);
-        });
-
-        observer.observe(this.$el);
-      },
-      render(h) {
-        return loading || h('div')
-      },
-    },
-    ...rest
-  })
+      }
+    }, rest);
+  };
 }
 
 //
@@ -8615,7 +8831,7 @@ var __vue_render__ = function() {
       _c("awaited", {
         staticClass: "content",
         attrs: {
-          action: "getData",
+          action: _vm.getData,
           "store-data": ["characters", "title"],
           lazy: ""
         },
@@ -8643,7 +8859,12 @@ var __vue_render__ = function() {
               return [
                 _c("h2", [_vm._v(_vm._s(title))]),
                 _vm._v(" "),
-                _c("Characters", { attrs: { characters: characters } })
+                _c(
+                  "transition",
+                  { attrs: { name: "fade" } },
+                  [_c("Characters", { attrs: { characters: characters } })],
+                  1
+                )
               ]
             }
           }
@@ -8659,7 +8880,7 @@ __vue_render__._withStripped = true;
   /* style */
   const __vue_inject_styles__ = function (inject) {
     if (!inject) return
-    inject("data-v-2bda15bc_0", { source: "\n.app {\n  font-family: 'Avenir', Helvetica, Arial, sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  text-align: center;\n  color: #2c3e50;\n  margin-top: 60px;\n}\n.content {\n  padding: 40px 0;\n}\n", map: {"version":3,"sources":["/Users/tarasbatenkov/Projects/vue-awaited/example/App.vue"],"names":[],"mappings":";AAwCA;EACA,mDAAA;EACA,mCAAA;EACA,kCAAA;EACA,kBAAA;EACA,cAAA;EACA,gBAAA;AACA;AACA;EACA,eAAA;AACA","file":"App.vue","sourcesContent":["<template>\n  <div id=\"app\" class=\"app\">\n    <h1>Scroll down ⬇</h1>\n    <p>Check the \"Network\" tab to see when data and component will be loaded.</p>\n    <div style=\"height: 1000px;\"></div>\n    <awaited action=\"getData\" :store-data=\"['characters', 'title']\" lazy class=\"content\">\n      <template #pending>\n        <h2>Loading...</h2>\n      </template>\n      <template #error>\n        <h2>Error happend</h2>\n      </template>\n      <template #default=\"{ data: [characters, title] }\">\n        <h2>{{ title }}</h2>\n        <Characters :characters=\"characters\" />\n      </template>\n    </awaited>\n  </div>\n</template>\n\n<script>\nimport { awaited, awaitedComponent } from '../src'\n\nexport default {\n  name: 'app',\n  components: {\n    awaited,\n    Characters: awaitedComponent({\n      asyncComponent: () => import('./Characters.vue')\n    })\n  },\n  methods: {\n    async getData() {\n      await this.$store.dispatch('getData')\n    }\n  }\n}\n</script>\n\n<style>\n.app {\n  font-family: 'Avenir', Helvetica, Arial, sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  text-align: center;\n  color: #2c3e50;\n  margin-top: 60px;\n}\n.content {\n  padding: 40px 0;\n}\n</style>"]}, media: undefined });
+    inject("data-v-155871e2_0", { source: "\n.app {\n  font-family: 'Avenir', Helvetica, Arial, sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  text-align: center;\n  color: #2c3e50;\n  margin-top: 60px;\n}\n.content {\n  padding: 40px 0;\n}\n.fade-enter-active, .fade-leave-active {\n  transition: opacity 2s;\n}\n.fade-enter, .fade-leave-to {\n  opacity: 0;\n}\n", map: {"version":3,"sources":["/Users/tarasbatenkov/Projects/vue-awaited/example/App.vue"],"names":[],"mappings":";AA0CA;EACA,mDAAA;EACA,mCAAA;EACA,kCAAA;EACA,kBAAA;EACA,cAAA;EACA,gBAAA;AACA;AACA;EACA,eAAA;AACA;AACA;EACA,sBAAA;AACA;AACA;EACA,UAAA;AACA","file":"App.vue","sourcesContent":["<template>\n  <div id=\"app\" class=\"app\">\n    <h1>Scroll down ⬇</h1>\n    <p>Check the \"Network\" tab to see when data and component will be loaded.</p>\n    <div style=\"height: 1000px;\"></div>\n    <awaited :action=\"getData\" :store-data=\"['characters', 'title']\" lazy class=\"content\">\n      <template #pending>\n        <h2>Loading...</h2>\n      </template>\n      <template #error>\n        <h2>Error happend</h2>\n      </template>\n      <template #default=\"{ data: [characters, title] }\">\n        <h2>{{ title }}</h2>\n        <transition name=\"fade\">\n          <Characters :characters=\"characters\" />\n        </transition>\n      </template>\n    </awaited>\n  </div>\n</template>\n\n<script>\nimport { awaited, awaitedComponent } from '../dist/index.es'\n\nexport default {\n  name: 'app',\n  components: {\n    awaited,\n    Characters: awaitedComponent({\n      asyncComponent: () => import('./Characters.vue')\n    })\n  },\n  methods: {\n    async getData() {\n      await this.$store.dispatch('getData')\n    }\n  }\n}\n</script>\n\n<style>\n.app {\n  font-family: 'Avenir', Helvetica, Arial, sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  text-align: center;\n  color: #2c3e50;\n  margin-top: 60px;\n}\n.content {\n  padding: 40px 0;\n}\n.fade-enter-active, .fade-leave-active {\n  transition: opacity 2s;\n}\n.fade-enter, .fade-leave-to {\n  opacity: 0;\n}\n</style>"]}, media: undefined });
 
   };
   /* scoped */
