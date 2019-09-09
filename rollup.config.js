@@ -3,39 +3,47 @@ import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 import replace from 'rollup-plugin-replace'
 import babel from 'rollup-plugin-babel'
-
-const plugins = [
-  vue({ template: { optimizeSSR: true } }),
-  babel({
-    babelrc: false,
-    presets: [
-      ['@babel/preset-env', {
-        targets: {
-          ie: '11'
-        }
-      }]
-    ]
-  })
-]
+import { terser } from 'rollup-plugin-terser'
 
 export default [
   {
     input: 'src/index.js',
-    output: {
-      format: 'es',
-      file: 'dist/index.es.js',
-      exports: 'named'
-    },
-    plugins
-  },
-  {
-    input: 'src/index.js',
-    output: {
-      format: 'cjs',
-      file: 'dist/index.cjs.js',
-      exports: 'named'
-    },
-    plugins
+    output: [
+      {
+        format: 'es',
+        file: 'dist/index.es.js',
+        exports: 'named',
+      },
+      {
+        format: 'cjs',
+        file: 'dist/index.cjs.js',
+        exports: 'named'
+      }
+    ],
+    plugins: [
+      resolve(),
+      commonjs(),
+      babel({
+        babelrc: false,
+        exclude: 'node_modules/**',
+        presets: [
+          [
+            '@babel/preset-env', 
+            {
+              modules: 'false',
+              useBuiltIns: 'usage',
+              corejs: '3.0.0',
+              targets: {
+                ie: 11,
+                browsers: 'last 2 versions',
+                node: 8
+              },
+            }
+          ]
+        ]
+      }),
+      terser()
+    ]
   },
   {
     input: 'example/index.js',

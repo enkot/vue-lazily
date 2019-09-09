@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { awaited, awaitedComponent } from '../dist/index.es'
+import { awaited, awaitedComponent } from '../src'
 
 export default {
   name: 'app',
