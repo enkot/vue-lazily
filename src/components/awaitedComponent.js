@@ -1,24 +1,20 @@
-export default function({
-  asyncComponent,
-  loading,
-  ...rest
-}) {
+export default function({ asyncComponent, loading }) {
   let resolveComponent
 
   return () => ({
     // resolve a component eventually.
-    component: new Promise((resolve) => {
+    component: new Promise(resolve => {
       resolveComponent = resolve
     }),
     loading: {
-      async mounted() {
+      mounted() {
         // if `IntersectionObserver` is not supported.
         if (!('IntersectionObserver' in window)) {
           asyncComponent().then(resolveComponent)
           return
         }
 
-        const observer = new IntersectionObserver((entries) => {
+        const observer = new IntersectionObserver(entries => {
           // use `intersectionRatio` instead of `isIntersecting`
           // https://github.com/w3c/IntersectionObserver/issues/211
           if (entries[0].intersectionRatio <= 0) return
@@ -33,8 +29,7 @@ export default function({
       },
       render(h) {
         return loading || h('div')
-      },
-    },
-    ...rest
+      }
+    }
   })
 }

@@ -1,18 +1,17 @@
-import vue from 'rollup-plugin-vue'
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import replace from 'rollup-plugin-replace'
+// import vue from 'rollup-plugin-vue'
+// import resolve from 'rollup-plugin-node-resolve'
+// import commonjs from 'rollup-plugin-commonjs'
+// import replace from 'rollup-plugin-replace'
 import babel from 'rollup-plugin-babel'
-import { terser } from 'rollup-plugin-terser'
 
 export default [
   {
-    input: 'src/index.js',
+    input: 'src/main.js',
     output: [
       {
         format: 'es',
         file: 'dist/index.es.js',
-        exports: 'named',
+        exports: 'named'
       },
       {
         format: 'cjs',
@@ -21,45 +20,22 @@ export default [
       }
     ],
     plugins: [
-      resolve(),
-      commonjs(),
       babel({
         babelrc: false,
-        exclude: 'node_modules/**',
+        runtimeHelpers: true,
         presets: [
           [
-            '@babel/preset-env', 
+            '@babel/preset-env',
             {
-              modules: 'false',
-              useBuiltIns: 'usage',
-              corejs: '3.0.0',
+              modules: false,
               targets: {
-                ie: 11,
-                browsers: 'last 2 versions',
-                node: 8
-              },
+                node: 8,
+                ie: 11
+              }
             }
           ]
         ]
-      }),
-      terser()
-    ]
-  },
-  {
-    input: 'example/index.js',
-    output: [
-      {
-        format: 'es',
-        dir: 'docs/'
-      }
-    ],
-    plugins: [
-      resolve(),
-      commonjs(),
-      vue(),
-      replace({
-        'process.env.NODE_ENV': JSON.stringify('development')
       })
     ]
-  },
+  }
 ]
