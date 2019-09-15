@@ -11,7 +11,7 @@ VueAwaited is a Vue.js plugin for data and components lazy loading.
 
 ## Why do I need this?
 
-There is a big chance that you don't need this library if your app is small. But, if app is big and one page loads more than 5-10 seconds - users will not thank you 😕. 
+There is a big chance that you don't need this library if your app is small. But, if one page of your app loads more than 5-10 seconds - VueAwaited can help 🙂. 
 
 This is because browser should load a large bundle of JavaScript, which must be downloaded and parsed, after that components may need some data that should be fetched before anything is displayed on the screen - all of this block user from viewing the page. Or, even worth, you use server-side rendering (SSR) and your big page should be rendered on the server and hydrated on the client.
 

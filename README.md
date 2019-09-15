@@ -1,34 +1,74 @@
-# vue-awaited
+# VueAwaited
 
-## Project setup
-```
-npm install
-```
+[![Coverage Status](https://coveralls.io/repos/github/enkot/vue-awaited/badge.svg?branch=master)](https://coveralls.io/github/enkot/vue-awaited?branch=master)
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+VueAwaited is a Vue.js plugin for data and components lazy loading. 
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Features
+* Loads data and components when they become visible.
+* Slots for loading and error states.
+* Can be used with Vuex actions.
+* Shared loading and error states for data and component.
+* No dependencies.
 
-### Run your tests
-```
-npm run test
-```
+## Why do I need this?
 
-### Lints and fixes files
-```
-npm run lint
+There is a big chance that you don't need this library if your app is small. But, if one page of your app loads more than 5-10 seconds - VueAwaited can help 🙂. 
+
+## Installation
+You can install this plugin via npm.
+
+### yarn
+```sh
+yarn add vue-awaited
 ```
 
-### Run your unit tests
-```
-npm run test:unit
+### npm
+```sh
+npm i vue-awaited
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Usage
+### Global
+```js
+import Vue from 'vue'
+import awaited from 'vue-awaited'
+
+Vue.component('awaited', awaited)
+```
+
+### Local
+```vue
+<script>
+import { awaited } from 'vue-awaited'
+
+export default {
+  components: {
+    awaited
+  }
+}
+</script>
+```
+
+## Basic Example
+Using component's method.
+```vue
+<template>
+  <awaited :action="getData" #default={ data: user }>
+    <h2>{{ user.name }}</h2>
+    <span>{{ user.email }}</span>
+  </awaited>
+</template>
+
+<script>
+import { fetchUser } from '@/services'
+
+export default {
+  methods: {
+    getData() {
+      return fetchUser()
+    }
+  }
+}
+</script>
+```
