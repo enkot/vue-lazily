@@ -11,9 +11,11 @@ VueAwaited is a Vue.js plugin for data and components lazy loading.
 * Shared loading and error states for data and component.
 * No dependencies.
 
-## Why do I need this?
+## Why do I need this library?
 
-There is a big chance that you don't need this library if your app is small. But, if one page of your app loads more than 5-10 seconds - VueAwaited can help 🙂. 
+There is a big chance that you don't need it if your app is small. But, if one page of your app loads more than 5-10 seconds - this library can help 🙂.
+
+VueAwaited also can handle loading and error states for you using slots and scoped slots API. 
 
 ## Installation
 You can install this plugin via npm.
