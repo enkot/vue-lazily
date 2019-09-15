@@ -74,3 +74,6 @@ export default {
 }
 </script>
 ```
+
+## TODO:
+* Shared loading and error states for data and component.

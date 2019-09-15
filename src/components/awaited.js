@@ -40,10 +40,6 @@ export default {
       }
 
       const promise = getPromiseFromAction(this, this.action)
-      assert(
-        promise,
-        `Action prop is not valid. It should be Vuex action name, function or promise`
-      )
 
       this.resolved = false
 
@@ -99,8 +95,6 @@ function getPromiseFromAction(vm, action) {
   if (isString(action)) return ensurePromise(() => vm.$store.dispatch(action))
   if (isFunction(action)) return ensurePromise(() => action())
   if (isPromise(action)) return action
-
-  return null
 }
 
 function wrapper(h, children = []) {
