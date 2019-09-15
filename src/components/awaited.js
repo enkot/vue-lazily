@@ -21,8 +21,8 @@ export default {
     target: null
   }),
   mounted() {
-    if (!this.action) return
-    if (isString(this.action)) assert(this.$store, `Vuex doesn't installed.`)
+    if (this.action && isString(this.action))
+      assert(this.$store, `Vuex doesn't installed.`)
 
     this.target = this.$refs.target
 
@@ -34,19 +34,27 @@ export default {
   },
   methods: {
     run() {
+      if (!this.action) {
+        this.resolved = true
+        return
+      }
+
       const promise = getPromiseFromAction(this, this.action)
       assert(
         promise,
         `Action prop is not valid. It should be Vuex action name, function or promise`
       )
 
+      this.resolved = false
+
       promise
         .then(data => {
           this.data = data
-          this.resolved = true
         })
         .catch(error => {
           this.error = error
+        })
+        .finally(() => {
           this.resolved = true
         })
     },
@@ -95,16 +103,15 @@ function getPromiseFromAction(vm, action) {
   return null
 }
 
+function wrapper(h, children = []) {
+  return h('div', { ref: 'target' }, children)
+}
+
 function getSlot(vm, h, name, data) {
+  const slot = vm.$slots[name]
   const scopedSlot = vm.$scopedSlots[name]
 
-  return h(
-    'div',
-    {
-      ref: 'target'
-    },
-    scopedSlot ? scopedSlot(data) : []
-  )
+  return wrapper(h, scopedSlot ? scopedSlot(data) : slot || [])
 }
 
 function isString(value) {

@@ -1,6 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
-import { intersectionObserver } from '@shopify/jest-dom-mocks'
 import fakePromise from 'faked-promise'
 import awaited from '@/components/awaited'
 
@@ -10,11 +9,11 @@ localVue.use(Vuex)
 const flushPromises = () => new Promise(setImmediate)
 
 const slots = {
+  default: '<span>data</span>',
   pending: '<span>pending</span>'
 }
 const scopedSlots = {
-  default: '<span slot-scope="{ data }">{{ data }}</span>',
-  error: '<span class="error" slot-scope="{ error }">{{ error.message }}</span>'
+  error: '<span slot-scope="{ error }">{{ error.message }}</span>'
 }
 
 describe('Awaited', () => {
@@ -45,59 +44,85 @@ describe('Awaited', () => {
     mountWrapper()
   })
   describe('without lazy load', () => {
-    it('displays pending with no action prop', () => {
+    it('displays data with no action prop', async () => {
       mountWrapper({ actionProp: null })
-      expect(wrapper.text()).toBe('pending')
+      expect(wrapper.text()).toBe('data')
     })
     it('display pending when function passed', () => {
       expect(wrapper.text()).toBe('pending')
     })
     it('display data when function resolves', async () => {
-      resolve('foo')
+      resolve()
       await flushPromises()
-      expect(wrapper.text()).toBe('foo')
+      expect(wrapper.text()).toBe('data')
     })
     it('display data when Vuex action resolves', async () => {
       mountWrapper({ actionProp: 'foo' })
-      resolve('foo')
+      resolve()
       await flushPromises()
-      expect(wrapper.text()).toBe('foo')
+      expect(wrapper.text()).toBe('data')
     })
     it('display data when promise resolves', async () => {
       mountWrapper({ actionProp: action() })
-      resolve('foo')
+      resolve()
       await flushPromises()
-      expect(wrapper.text()).toBe('foo')
+      expect(wrapper.text()).toBe('data')
     })
     it('display error when function rejects', async () => {
-      reject(new Error('bar'))
+      reject(new Error('error'))
       await flushPromises()
-      expect(wrapper.text()).toBe('bar')
+      expect(wrapper.text()).toBe('error')
     })
     it('display error when Vuex action rejects', async () => {
       mountWrapper({ actionProp: 'foo' })
-      reject(new Error('bar'))
+      reject(new Error('error'))
       await flushPromises()
-      expect(wrapper.text()).toBe('bar')
+      expect(wrapper.text()).toBe('error')
     })
     it('display error when promise rejects', async () => {
       mountWrapper({ actionProp: action() })
-      reject(new Error('bar'))
+      reject(new Error('error'))
       await flushPromises()
-      expect(wrapper.text()).toBe('bar')
+      expect(wrapper.text()).toBe('error')
     })
   })
   describe('with lazy load', () => {
+    let intersect
+    global.IntersectionObserver = function(cb) {
+      intersect = cb
+      return {
+        observe: () => {},
+        unobserve: () => {}
+      }
+    }
     beforeEach(() => {
-      intersectionObserver.mock()
       mountWrapper({ lazy: true })
     })
-    afterEach(() => {
-      intersectionObserver.restore()
-    })
-    it('displays pending with no action prop', () => {
+    it('displays pending with no action prop', async () => {
       mountWrapper({ actionProp: null, lazy: true })
       expect(wrapper.text()).toBe('pending')
+    })
+    it('display pending when function passed', async () => {
+      expect(wrapper.text()).toBe('pending')
+    })
+    it('display data when function resolves', async () => {
+      intersect([{ intersectionRatio: 1 }])
+      resolve()
+      await flushPromises()
+      expect(wrapper.text()).toBe('data')
+    })
+    it('display data when Vuex action resolves', async () => {
+      mountWrapper({ actionProp: 'foo', lazy: true })
+      intersect([{ intersectionRatio: 1 }])
+      resolve()
+      await flushPromises()
+      expect(wrapper.text()).toBe('data')
+    })
+    it('display error when function rejects', async () => {
+      intersect([{ intersectionRatio: 1 }])
+      reject(new Error('error'))
+      await flushPromises()
+      expect(wrapper.text()).toBe('error')
     })
   })
 })

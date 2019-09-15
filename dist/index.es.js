@@ -12,12 +12,12 @@ var awaited = {
     },
     lazy: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data: function data() {
     return {
-      resolved: true,
+      resolved: false,
       error: null,
       data: null,
       observer: null,
@@ -25,8 +25,7 @@ var awaited = {
     };
   },
   mounted: function mounted() {
-    if (!this.action) return;
-    if (isString(this.action)) assert(this.$store, "Vuex doesn't installed.");
+    if (this.action && isString(this.action)) assert(this.$store, "Vuex doesn't installed.");
     this.target = this.$refs.target;
     if (this.lazy) this.observe();else this.run();
   },
@@ -37,13 +36,19 @@ var awaited = {
     run: function run() {
       var _this = this;
 
+      if (!this.action) {
+        this.resolved = true;
+        return;
+      }
+
       var promise = getPromiseFromAction(this, this.action);
       assert(promise, "Action prop is not valid. It should be Vuex action name, function or promise");
+      this.resolved = false;
       promise.then(function (data) {
         _this.data = data;
-        _this.resolved = true;
       }).catch(function (error) {
         _this.error = error;
+      }).finally(function () {
         _this.resolved = true;
       });
     },
@@ -105,11 +110,17 @@ function getPromiseFromAction(vm, action) {
   return null;
 }
 
-function getSlot(vm, h, name, data) {
-  var scopedSlot = vm.$scopedSlots[name];
+function wrapper(h) {
+  var children = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
   return h('div', {
     ref: 'target'
-  }, scopedSlot ? scopedSlot(data) : []);
+  }, children);
+}
+
+function getSlot(vm, h, name, data) {
+  var slot = vm.$slots[name];
+  var scopedSlot = vm.$scopedSlots[name];
+  return wrapper(h, scopedSlot ? scopedSlot(data) : slot || []);
 }
 
 function isString(value) {

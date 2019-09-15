@@ -6,7 +6,7 @@ module.exports = {
       description: 'A Vue.js plugin for data and components lazy loading.'
     }
   },
-  base: 'vue-awaited',
+  base: '/vue-awaited/',
   themeConfig: {
     repoLabel: 'Contribute!',
     // git repo here... gitlab, github
