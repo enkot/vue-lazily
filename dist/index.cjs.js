@@ -46,7 +46,6 @@ var awaited = {
       }
 
       var promise = getPromiseFromAction(this, this.action);
-      assert(promise, "Action prop is not valid. It should be Vuex action name, function or promise");
       this.resolved = false;
       promise.then(function (data) {
         _this.data = data;
@@ -111,7 +110,6 @@ function getPromiseFromAction(vm, action) {
     return action();
   });
   if (isPromise(action)) return action;
-  return null;
 }
 
 function wrapper(h) {

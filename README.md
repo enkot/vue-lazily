@@ -1,5 +1,6 @@
 # VueAwaited
 
+[![Build Status](https://travis-ci.org/enkot/vue-awaited.svg?branch=master)](https://travis-ci.org/enkot/vue-awaited)
 [![Coverage Status](https://coveralls.io/repos/github/enkot/vue-awaited/badge.svg?branch=master)](https://coveralls.io/github/enkot/vue-awaited?branch=master)
 
 VueAwaited is a Vue.js plugin for data and components lazy loading. 
