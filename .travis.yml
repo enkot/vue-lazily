@@ -1,3 +1,14 @@
 language: node_js
 node_js:
-  - "10.0.0"
+  - "12.0.0"
+branches:
+  only:
+  - master
+cache:
+  directories:
+  - node_modules
+install:
+- yarn install
+script:
+- yarn test
+- yarn coveralls
