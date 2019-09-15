@@ -25,6 +25,14 @@ describe('Awaited', () => {
     return promise
   }
 
+  const syncAction = function() {
+    return 'data'
+  }
+
+  const syncActionReject = function() {
+    throw Error('error')
+  }
+
   const mountWrapper = ({ actionProp = action, lazy = false } = {}) => {
     wrapper = mount(awaited, {
       store,
@@ -56,6 +64,11 @@ describe('Awaited', () => {
       await flushPromises()
       expect(wrapper.text()).toBe('data')
     })
+    it('display data when sync function resolves', async () => {
+      mountWrapper({ actionProp: syncAction })
+      await flushPromises()
+      expect(wrapper.text()).toBe('data')
+    })
     it('display data when Vuex action resolves', async () => {
       mountWrapper({ actionProp: 'foo' })
       resolve()
@@ -73,6 +86,11 @@ describe('Awaited', () => {
       await flushPromises()
       expect(wrapper.text()).toBe('error')
     })
+    it('display data when sync function rejects', async () => {
+      mountWrapper({ actionProp: syncActionReject })
+      await flushPromises()
+      expect(wrapper.text()).toBe('error')
+    })
     it('display error when Vuex action rejects', async () => {
       mountWrapper({ actionProp: 'foo' })
       reject(new Error('error'))
@@ -87,15 +105,16 @@ describe('Awaited', () => {
     })
   })
   describe('with lazy load', () => {
-    let intersect
-    global.IntersectionObserver = function(cb) {
-      intersect = cb
-      return {
-        observe: () => {},
-        unobserve: () => {}
-      }
-    }
+    let intersect, unobserveFn
     beforeEach(() => {
+      unobserveFn = jest.fn()
+      global.IntersectionObserver = function(cb) {
+        intersect = cb
+        return {
+          observe: () => {},
+          unobserve: unobserveFn
+        }
+      }
       mountWrapper({ lazy: true })
     })
     it('displays pending with no action prop', async () => {
@@ -123,6 +142,10 @@ describe('Awaited', () => {
       reject(new Error('error'))
       await flushPromises()
       expect(wrapper.text()).toBe('error')
+    })
+    it('unobserve element on destroy', async () => {
+      wrapper.destroy()
+      expect(unobserveFn).toBeCalled()
     })
   })
 })
