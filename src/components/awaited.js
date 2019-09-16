@@ -63,7 +63,7 @@ export default {
       this.observer.observe(this.target)
     },
     unobserve() {
-      if (this.target) {
+      if (this.observer) {
         this.observer.unobserve(this.target)
       }
     }
