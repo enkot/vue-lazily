@@ -63,7 +63,9 @@ export default {
       this.observer.observe(this.target)
     },
     unobserve() {
-      this.observer.unobserve(this.target)
+      if (this.target) {
+        this.observer.unobserve(this.target)
+      }
     }
   },
   render(h) {

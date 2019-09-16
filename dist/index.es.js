@@ -64,7 +64,9 @@ var awaited = {
       this.observer.observe(this.target);
     },
     unobserve: function unobserve() {
-      this.observer.unobserve(this.target);
+      if (this.target) {
+        this.observer.unobserve(this.target);
+      }
     }
   },
   render: function render(h) {
