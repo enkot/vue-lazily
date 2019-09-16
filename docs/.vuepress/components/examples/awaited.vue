@@ -13,7 +13,7 @@
     </awaited>
     <awaited :action="getData" lazy>
       <template #pending>
-        Loading...
+        <loading />
       </template>  
       <template #error="{ error }"> 
         {{ error.message }}
@@ -27,8 +27,11 @@
 </template>
 
 <script>
-import { Promise } from 'q';
+import loading from './loading'
 export default {
+  components: {
+    loading
+  },
   methods: {
     getData() {
       return new Promise((resolve, reject) => {

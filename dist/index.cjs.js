@@ -70,7 +70,7 @@ var awaited = {
       this.observer.observe(this.$el);
     },
     unobserve: function unobserve() {
-      if (this.observer) {
+      if (this.observer && this.$el) {
         this.observer.unobserve(this.$el);
       }
     }

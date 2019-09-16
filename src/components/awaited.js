@@ -61,10 +61,11 @@ export default {
         this.unobserve()
         this.run()
       })
+
       this.observer.observe(this.$el)
     },
     unobserve() {
-      if (this.observer) {
+      if (this.observer && this.$el) {
         this.observer.unobserve(this.$el)
       }
     }
