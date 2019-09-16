@@ -21,11 +21,14 @@ export default {
     resolved: false,
     error: null,
     data: null,
-    observer: null
+    observer: null,
+    target: null
   }),
   mounted() {
     if (this.action && isString(this.action))
       assert(this.$store, `Vuex doesn't installed.`)
+
+    this.target = this.$el
 
     if (this.lazy) this.observe()
     else this.run()
@@ -62,11 +65,12 @@ export default {
         this.run()
       })
 
-      this.observer.observe(this.$el)
+      this.observer.observe(this.target)
     },
     unobserve() {
-      if (this.observer && this.$el) {
-        this.observer.unobserve(this.$el)
+      if (this.observer && this.target) {
+        this.observer.unobserve(this.target)
+        this.target = null
       }
     }
   },
