@@ -11,20 +11,21 @@ export default {
     lazy: {
       type: Boolean,
       default: false
+    },
+    tag: {
+      type: String,
+      default: 'span'
     }
   },
   data: () => ({
     resolved: false,
     error: null,
     data: null,
-    observer: null,
-    target: null
+    observer: null
   }),
   mounted() {
     if (this.action && isString(this.action))
       assert(this.$store, `Vuex doesn't installed.`)
-
-    this.target = this.$refs.target
 
     if (this.lazy) this.observe()
     else this.run()
@@ -60,11 +61,11 @@ export default {
         this.unobserve()
         this.run()
       })
-      this.observer.observe(this.target)
+      this.observer.observe(this.$el)
     },
     unobserve() {
       if (this.observer) {
-        this.observer.unobserve(this.target)
+        this.observer.unobserve(this.$el)
       }
     }
   },
@@ -99,15 +100,17 @@ function getPromiseFromAction(vm, action) {
   if (isPromise(action)) return action
 }
 
-function wrapper(h, children = []) {
-  return h('div', { ref: 'target' }, children)
+function convertNodes(h, wrapperTag, nodes) {
+  if (nodes.length > 1 || !nodes[0].tag) return h(wrapperTag, {}, nodes)
+  return nodes[0]
 }
 
 function getSlot(vm, h, name, data) {
   const slot = vm.$slots[name]
   const scopedSlot = vm.$scopedSlots[name]
+  const node = scopedSlot ? scopedSlot(data) : slot
 
-  return wrapper(h, scopedSlot ? scopedSlot(data) : slot || [])
+  return Array.isArray(node) ? convertNodes(h, vm.tag, node) : node
 }
 
 function isString(value) {

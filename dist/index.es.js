@@ -13,6 +13,10 @@ var awaited = {
     lazy: {
       type: Boolean,
       default: false
+    },
+    tag: {
+      type: String,
+      default: 'span'
     }
   },
   data: function data() {
@@ -20,13 +24,11 @@ var awaited = {
       resolved: false,
       error: null,
       data: null,
-      observer: null,
-      target: null
+      observer: null
     };
   },
   mounted: function mounted() {
     if (this.action && isString(this.action)) assert(this.$store, "Vuex doesn't installed.");
-    this.target = this.$refs.target;
     if (this.lazy) this.observe();else this.run();
   },
   destroyed: function destroyed() {
@@ -61,11 +63,11 @@ var awaited = {
 
         _this2.run();
       });
-      this.observer.observe(this.target);
+      this.observer.observe(this.$el);
     },
     unobserve: function unobserve() {
-      if (this.target) {
-        this.observer.unobserve(this.target);
+      if (this.observer) {
+        this.observer.unobserve(this.$el);
       }
     }
   },
@@ -110,17 +112,16 @@ function getPromiseFromAction(vm, action) {
   if (isPromise(action)) return action;
 }
 
-function wrapper(h) {
-  var children = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-  return h('div', {
-    ref: 'target'
-  }, children);
+function convertNodes(h, wrapperTag, nodes) {
+  if (nodes.length > 1 || !nodes[0].tag) return h(wrapperTag, {}, nodes);
+  return nodes[0];
 }
 
 function getSlot(vm, h, name, data) {
   var slot = vm.$slots[name];
   var scopedSlot = vm.$scopedSlots[name];
-  return wrapper(h, scopedSlot ? scopedSlot(data) : slot || []);
+  var node = scopedSlot ? scopedSlot(data) : slot;
+  return Array.isArray(node) ? convertNodes(h, vm.tag, node) : node;
 }
 
 function isString(value) {

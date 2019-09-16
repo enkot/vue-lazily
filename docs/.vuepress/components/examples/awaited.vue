@@ -5,7 +5,7 @@
     <div class="offset"></div>
     <awaited>
       <template #pending>
-        Loading...
+        <span>Loading...</span>
       </template> 
       <template #default>
         <p>Static here</p>
@@ -14,6 +14,9 @@
     <awaited :action="getData" lazy>
       <template #pending>
         Loading...
+      </template>  
+      <template #error="{ error }"> 
+        {{ error.message }}
       </template>  
       <template #default>
         This is slot content 1.
