@@ -4,6 +4,10 @@ export default {
       type: [String, Function, Promise],
       required: false
     },
+    loading: {
+      type: Boolean,
+      default: false
+    },
     storeData: {
       type: [String, Array],
       required: false
@@ -75,11 +79,11 @@ export default {
     }
   },
   render(h) {
-    if (this.error) {
+    if (this.error && !this.loading) {
       return getSlot(this, h, 'error', { error: this.error })
     }
 
-    if (this.resolved) {
+    if (this.resolved && !this.loading) {
       return getSlot(this, h, 'default', { data: this.data })
     }
 
