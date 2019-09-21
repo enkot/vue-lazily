@@ -5,6 +5,8 @@
 
 VueAwaited is a Vue.js plugin for data and components lazy loading. 
 
+Inspired by [vue-promised](https://github.com/posva/vue-promised), recommend to look at it if you need loading and errors handling.
+
 ## Features
 * Loads data and components when they become visible.
 * Slots for loading and error states.
