@@ -11,7 +11,7 @@
         <p>Static here</p>
       </template>
     </awaited>
-    <awaited :action="getData" lazy>
+    <awaited :action="getData" lazy :delay="2000">
       <template #pending>
         <loading />
       </template>  

@@ -16,6 +16,10 @@ export default {
       type: Boolean,
       default: false
     },
+    delay: {
+      type: Number,
+      default: 200,
+    },
     tag: {
       type: String,
       default: 'span'
@@ -26,7 +30,8 @@ export default {
     error: null,
     data: null,
     observer: null,
-    target: null
+    target: null,
+    isDelay: true
   }),
   mounted() {
     if (this.action && isString(this.action))
@@ -50,7 +55,7 @@ export default {
       const promise = getPromiseFromAction(this, this.action)
 
       this.resolved = false
-
+      this.startDelay()
       promise
         .then(data => {
           this.data = data
@@ -76,6 +81,17 @@ export default {
         this.observer.unobserve(this.target)
         this.target = null
       }
+    },
+    startDelay() {
+      if (this.delay > 0) {
+        this.isDelay = true
+        this.timerId = setTimeout(() => {
+          this.isDelay = false
+          clearTimeout(this.timerId)
+        }, this.delay)
+      } else {
+        this.isDelay = false
+      }
     }
   },
   render(h) {
@@ -86,6 +102,8 @@ export default {
     if (this.resolved && !this.loading) {
       return getSlot(this, h, 'default', { data: this.data })
     }
+
+    if (this.isDelay) return h(this.tag)
 
     return getSlot(this, h, 'pending', { data: this.data })
   }

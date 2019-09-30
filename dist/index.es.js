@@ -1,4 +1,5 @@
 import 'core-js/modules/es6.function.name';
+import 'core-js/modules/es6.number.constructor';
 
 var awaited = {
   props: {
@@ -18,6 +19,10 @@ var awaited = {
       type: Boolean,
       default: false
     },
+    delay: {
+      type: Number,
+      default: 200
+    },
     tag: {
       type: String,
       default: 'span'
@@ -29,7 +34,8 @@ var awaited = {
       error: null,
       data: null,
       observer: null,
-      target: null
+      target: null,
+      isDelay: true
     };
   },
   mounted: function mounted() {
@@ -51,6 +57,7 @@ var awaited = {
 
       var promise = getPromiseFromAction(this, this.action);
       this.resolved = false;
+      this.startDelay();
       promise.then(function (data) {
         _this.data = data;
       }).catch(function (error) {
@@ -76,6 +83,19 @@ var awaited = {
         this.observer.unobserve(this.target);
         this.target = null;
       }
+    },
+    startDelay: function startDelay() {
+      var _this3 = this;
+
+      if (this.delay > 0) {
+        this.isDelay = true;
+        this.timerId = setTimeout(function () {
+          _this3.isDelay = false;
+          clearTimeout(_this3.timerId);
+        }, this.delay);
+      } else {
+        this.isDelay = false;
+      }
     }
   },
   render: function render(h) {
@@ -91,6 +111,7 @@ var awaited = {
       });
     }
 
+    if (this.isDelay) return h(this.tag);
     return getSlot(this, h, 'pending', {
       data: this.data
     });
