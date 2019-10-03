@@ -60,9 +60,9 @@ var awaited = {
       this.startDelay();
       promise.then(function (data) {
         _this.data = data;
+        _this.resolved = true;
       }).catch(function (error) {
         _this.error = error;
-      }).finally(function () {
         _this.resolved = true;
       });
     },

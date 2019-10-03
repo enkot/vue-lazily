@@ -18,7 +18,7 @@ export default {
     },
     delay: {
       type: Number,
-      default: 200,
+      default: 200
     },
     tag: {
       type: String,
@@ -59,11 +59,10 @@ export default {
       promise
         .then(data => {
           this.data = data
+          this.resolved = true
         })
         .catch(error => {
           this.error = error
-        })
-        .finally(() => {
           this.resolved = true
         })
     },
