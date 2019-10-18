@@ -25,6 +25,10 @@ var awaited = {
     },
     delay: {
       type: Number,
+      default: 0
+    },
+    pendingDelay: {
+      type: Number,
       default: 200
     },
     tag: {
@@ -39,7 +43,7 @@ var awaited = {
       data: null,
       observer: null,
       target: null,
-      isDelay: true
+      isPendingDelay: true
     };
   },
   mounted: function mounted() {
@@ -54,6 +58,19 @@ var awaited = {
     run: function run() {
       var _this = this;
 
+      if (this.delay > 0) {
+        this.delayTimer = setTimeout(function () {
+          _this.handler();
+
+          clearTimeout(_this.delayTimer);
+        }, this.delay);
+      } else {
+        this.handler();
+      }
+    },
+    handler: function handler() {
+      var _this2 = this;
+
       if (!this.action) {
         this.resolved = true;
         return;
@@ -61,24 +78,24 @@ var awaited = {
 
       var promise = getPromiseFromAction(this, this.action);
       this.resolved = false;
-      this.startDelay();
+      this.startpendingDelay();
       promise.then(function (data) {
-        _this.data = data;
-        _this.resolved = true;
+        _this2.data = data;
+        _this2.resolved = true;
       }).catch(function (error) {
-        _this.error = error;
-        _this.resolved = true;
+        _this2.error = error;
+        _this2.resolved = true;
       });
     },
     observe: function observe() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.observer = new IntersectionObserver(function (entries) {
         if (entries[0].intersectionRatio <= 0) return;
 
-        _this2.unobserve();
+        _this3.unobserve();
 
-        _this2.run();
+        _this3.run();
       });
       this.observer.observe(this.target);
     },
@@ -88,17 +105,17 @@ var awaited = {
         this.target = null;
       }
     },
-    startDelay: function startDelay() {
-      var _this3 = this;
+    startpendingDelay: function startpendingDelay() {
+      var _this4 = this;
 
-      if (this.delay > 0) {
-        this.isDelay = true;
-        this.timerId = setTimeout(function () {
-          _this3.isDelay = false;
-          clearTimeout(_this3.timerId);
-        }, this.delay);
+      if (this.pendingDelay > 0) {
+        this.isPendingDelay = true;
+        this.pendingDelayTimer = setTimeout(function () {
+          _this4.isPendingDelay = false;
+          clearTimeout(_this4.pendingDelayTimer);
+        }, this.pendingDelay);
       } else {
-        this.isDelay = false;
+        this.isPendingDelay = false;
       }
     }
   },
@@ -115,7 +132,7 @@ var awaited = {
       });
     }
 
-    if (this.isDelay) return h(this.tag);
+    if (this.isPendingDelay) return h(this.tag);
     return getSlot(this, h, 'pending', {
       data: this.data
     });

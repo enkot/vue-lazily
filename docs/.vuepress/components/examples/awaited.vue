@@ -6,21 +6,17 @@
     <awaited>
       <template #pending>
         <span>Loading...</span>
-      </template> 
+      </template>
       <template #default>
         <p>Static here</p>
       </template>
     </awaited>
-    <awaited :action="getData" lazy :delay="2000">
+    <awaited :action="getData" lazy :pending-delay="100" :delay="2000">
       <template #pending>
         <loading />
-      </template>  
-      <template #error="{ error }"> 
-        {{ error.message }}
-      </template>  
-      <template #default>
-        This is slot content 1.
       </template>
+      <template #error="{ error }">{{ error.message }}</template>
+      <template #default>This is slot content 1.</template>
     </awaited>
     <div class="offset"></div>
   </div>
@@ -48,7 +44,7 @@ export default {
   margin: 10px 0;
   padding: 10px 40px;
   overflow-y: scroll;
-  background-color: #F7FAFC;
+  background-color: #f7fafc;
 }
 .offset {
   height: 420px;

@@ -18,6 +18,10 @@ export default {
     },
     delay: {
       type: Number,
+      default: 0
+    },
+    pendingDelay: {
+      type: Number,
       default: 200
     },
     tag: {
@@ -31,7 +35,7 @@ export default {
     data: null,
     observer: null,
     target: null,
-    isDelay: true
+    isPendingDelay: true
   }),
   mounted() {
     if (this.action && isString(this.action))
@@ -47,6 +51,16 @@ export default {
   },
   methods: {
     run() {
+      if (this.delay > 0) {
+        this.delayTimer = setTimeout(() => {
+          this.handler()
+          clearTimeout(this.delayTimer)
+        }, this.delay)
+      } else {
+        this.handler()
+      }
+    },
+    handler() {
       if (!this.action) {
         this.resolved = true
         return
@@ -55,7 +69,7 @@ export default {
       const promise = getPromiseFromAction(this, this.action)
 
       this.resolved = false
-      this.startDelay()
+      this.startpendingDelay()
       promise
         .then(data => {
           this.data = data
@@ -81,15 +95,15 @@ export default {
         this.target = null
       }
     },
-    startDelay() {
-      if (this.delay > 0) {
-        this.isDelay = true
-        this.timerId = setTimeout(() => {
-          this.isDelay = false
-          clearTimeout(this.timerId)
-        }, this.delay)
+    startpendingDelay() {
+      if (this.pendingDelay > 0) {
+        this.isPendingDelay = true
+        this.pendingDelayTimer = setTimeout(() => {
+          this.isPendingDelay = false
+          clearTimeout(this.pendingDelayTimer)
+        }, this.pendingDelay)
       } else {
-        this.isDelay = false
+        this.isPendingDelay = false
       }
     }
   },
@@ -102,7 +116,7 @@ export default {
       return getSlot(this, h, 'default', { data: this.data })
     }
 
-    if (this.isDelay) return h(this.tag)
+    if (this.isPendingDelay) return h(this.tag)
 
     return getSlot(this, h, 'pending', { data: this.data })
   }
