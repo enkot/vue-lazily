@@ -3,20 +3,12 @@
     <h1>Scroll down ⬇</h1>
     <p>Check the "Network" tab to see when data and component will be loaded.</p>
     <div class="offset"></div>
-    <awaited>
-      <template #pending>
-        <span>Loading...</span>
-      </template>
-      <template #default>
-        <p>Static here</p>
-      </template>
-    </awaited>
-    <awaited :action="getData" lazy :pending-delay="100" :delay="2000">
+    <awaited :action="getData" lazy :height="200" :pending-delay="100" :delay="2000">
       <template #pending>
         <loading />
       </template>
       <template #error="{ error }">{{ error.message }}</template>
-      <template #default>This is slot content 1.</template>
+      <template #default="{ data }">{{ data }}</template>
     </awaited>
     <div class="offset"></div>
   </div>

@@ -29,7 +29,11 @@ var awaited = {
     },
     tag: {
       type: String,
-      default: 'span'
+      default: 'div'
+    },
+    height: {
+      type: Number,
+      default: 0
     }
   },
   data: function data() {
@@ -128,7 +132,11 @@ var awaited = {
       });
     }
 
-    if (this.isPendingDelay) return h(this.tag);
+    if (this.isPendingDelay) return h(this.tag, {
+      style: {
+        height: "".concat(this.height, "px")
+      }
+    });
     return getSlot(this, h, 'pending', {
       data: this.data
     });

@@ -26,7 +26,11 @@ export default {
     },
     tag: {
       type: String,
-      default: 'span'
+      default: 'div'
+    },
+    height: {
+      type: Number,
+      default: 0
     }
   },
   data: () => ({
@@ -116,7 +120,12 @@ export default {
       return getSlot(this, h, 'default', { data: this.data })
     }
 
-    if (this.isPendingDelay) return h(this.tag)
+    if (this.isPendingDelay)
+      return h(this.tag, {
+        style: {
+          height: `${this.height}px`
+        }
+      })
 
     return getSlot(this, h, 'pending', { data: this.data })
   }
