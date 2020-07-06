@@ -27,14 +27,12 @@ module.exports = {
         {
           title: 'Guide',
           collapsable: false,
-          children: [
-            '', 
-            'gettingStarted',
-            'awaited', 
-            'awaitedComponent'
-          ]
+          children: ['', 'gettingStarted', 'awaited', 'awaitedComponent']
         }
       ]
     }
+  },
+  configureWebpack: {
+    devtool: 'source-map'
   }
 }

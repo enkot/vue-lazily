@@ -1,5 +1,5 @@
-import 'core-js/modules/es6.function.name';
-import 'core-js/modules/es6.number.constructor';
+import 'core-js/modules/es.number.constructor';
+import 'core-js/modules/es.object.to-string';
 
 var awaited = {
   props: {
