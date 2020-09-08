@@ -3,7 +3,7 @@
     <h1>Scroll down ⬇</h1>
     <p>Check the "Network" tab to see when data and component will be loaded.</p>
     <div class="offset"></div>
-    <awaited :action="getData" lazy :height="200" :pending-delay="100" :delay="2000">
+    <awaited :action="getData" lazy :height="200" :pending-delay="100" :delay="2000" :watch="test">
       <template #pending>
         <loading />
       </template>
@@ -20,8 +20,19 @@ export default {
   components: {
     loading
   },
+  data() {
+    return {
+      test: 12
+    }
+  },
+  created() {
+    setTimeout(() => {
+      this.test = 34
+    }, 5000)
+  },
   methods: {
     getData() {
+      console.log('called')
       return new Promise((resolve, reject) => {
         setTimeout(() => resolve('My data!'), 1000)
       })

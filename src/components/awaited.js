@@ -31,6 +31,9 @@ export default {
     height: {
       type: Number,
       default: 0
+    },
+    watch: {
+      type: [Number, String, Array, Object, Function]
     }
   },
   data: () => ({
@@ -47,8 +50,11 @@ export default {
 
     this.target = this.$el
 
+    
     if (this.lazy) this.observe()
     else this.run()
+
+    if (this.watch) this.$watch(typeof this.watch === 'function' ? this.watch : () => this.watch, this.run)
   },
   destroyed() {
     this.unobserve()
