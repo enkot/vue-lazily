@@ -95,7 +95,7 @@ Using component's method:
 
 ```vue
 <template>
-  <awaited :action="getCharacter" #default="{ image, name, species }">
+  <awaited :action="getCharacter" #default="{ data: { image, name, species } }">
     <img :src="image" :alt="name" />
     <h2>{{ name }}</h2>
     <span>{{ species }}</span>
@@ -119,8 +119,8 @@ Using slots:
 <template>
   <awaited action="https://rickandmortyapi.com/api/character/1">
     <template #pending>Loading...</template>
-    <template #error="{ message }">{{ message }}</template>
-    <template #default="{ image, name, species }">
+    <template #error="{ error }">{{ error.message }}</template>
+    <template #default="{ data: { image, name, species } }">
       <img :src="image" :alt="name" />
       <h2>{{ name }}</h2>
       <span>{{ species }}</span>

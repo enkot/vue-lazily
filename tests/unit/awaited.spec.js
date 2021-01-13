@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import fakePromise from 'faked-promise'
-import awaited from '../../src'
+import { awaited } from '../../src'
 
 const DELAY = 10 // reduce default delay to run tests faster
 
@@ -51,10 +51,12 @@ describe('Awaited', () => {
 
   beforeEach(() => {
     mountWrapper()
+    global.Response = function() {}
   })
   describe('without lazy load', () => {
     it('displays default data with no action prop', async () => {
       mountWrapper({ actionProp: null })
+      await waitDelay()
       expect(wrapper.text()).toBe('default')
     })
     it('display nothing with default delay', () => {

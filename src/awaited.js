@@ -133,11 +133,11 @@ export default {
     const h = isVue3 ? Vue.h : createElement
 
     if (this.error) {
-      return getSlot(this, h, 'error', this.error)
+      return getSlot(this, h, 'error', { error: this.error })
     }
 
     if (this.resolved) {
-      return getSlot(this, h, 'default', this.data)
+      return getSlot(this, h, 'default', { data: this.data })
     }
 
     if (this.isDelay)
@@ -152,7 +152,7 @@ export default {
           : null
       )
 
-    return getSlot(this, h, 'pending', this.data)
+    return getSlot(this, h, 'pending', { data: this.data })
   }
 }
 
