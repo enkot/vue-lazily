@@ -1,23 +1,28 @@
-import { mount, createLocalVue } from '@vue/test-utils'
-import Vuex from 'vuex'
+import { mount } from '@vue/test-utils'
 import fakePromise from 'faked-promise'
-import awaited from '@/components/awaited'
+import awaited from '../../src'
 
-const localVue = createLocalVue()
-localVue.use(Vuex)
+const DELAY = 10 // reduce default delay to run tests faster
 
 const flushPromises = () => new Promise(setImmediate)
+const waitDelay = () => new Promise(resolve => setTimeout(resolve, DELAY))
 
 const slots = {
-  default: '<span>data</span>',
-  pending: '<span>pending</span>'
-}
-const scopedSlots = {
-  error: '<span slot-scope="{ error }">{{ error.message }}</span>'
+  default: `
+    <template #default="{ data }">
+      <span>{{ data || 'default' }}</span>
+    </template>
+  `,
+  pending: '<span>pending</span>',
+  error: `
+    <template #error="{ error }">
+      <span>{{ error.message }}</span>
+    </template>
+  `
 }
 
 describe('Awaited', () => {
-  let wrapper, store, promise, resolve, reject
+  let wrapper, promise, resolve, reject
 
   const action = function() {
     ;[promise, resolve, reject] = fakePromise()
@@ -33,34 +38,34 @@ describe('Awaited', () => {
     throw Error('error')
   }
 
-  const mountWrapper = ({ actionProp = action, lazy = false } = {}) => {
+  const mountWrapper = ({
+    actionProp = action,
+    lazy = false,
+    delay = DELAY
+  } = {}) => {
     wrapper = mount(awaited, {
-      store,
-      localVue,
-      propsData: { action: actionProp, lazy },
-      slots,
-      scopedSlots
+      props: { action: actionProp, lazy, delay },
+      slots
     })
   }
 
   beforeEach(() => {
-    store = new Vuex.Store({
-      actions: {
-        foo: action
-      }
-    })
     mountWrapper()
   })
   describe('without lazy load', () => {
-    it('displays data with no action prop', async () => {
+    it('displays default data with no action prop', async () => {
       mountWrapper({ actionProp: null })
-      expect(wrapper.text()).toBe('data')
+      expect(wrapper.text()).toBe('default')
     })
-    it('display pending when function passed', () => {
+    it('display nothing with default delay', () => {
+      expect(wrapper.text()).toBe('')
+    })
+    it('display pending when function passed after waiting delay', async () => {
+      await waitDelay()
       expect(wrapper.text()).toBe('pending')
     })
     it('display data when function resolves', async () => {
-      resolve()
+      resolve('data')
       await flushPromises()
       expect(wrapper.text()).toBe('data')
     })
@@ -69,15 +74,9 @@ describe('Awaited', () => {
       await flushPromises()
       expect(wrapper.text()).toBe('data')
     })
-    it('display data when Vuex action resolves', async () => {
-      mountWrapper({ actionProp: 'foo' })
-      resolve()
-      await flushPromises()
-      expect(wrapper.text()).toBe('data')
-    })
     it('display data when promise resolves', async () => {
       mountWrapper({ actionProp: action() })
-      resolve()
+      resolve('data')
       await flushPromises()
       expect(wrapper.text()).toBe('data')
     })
@@ -88,12 +87,6 @@ describe('Awaited', () => {
     })
     it('display data when sync function rejects', async () => {
       mountWrapper({ actionProp: syncActionReject })
-      await flushPromises()
-      expect(wrapper.text()).toBe('error')
-    })
-    it('display error when Vuex action rejects', async () => {
-      mountWrapper({ actionProp: 'foo' })
-      reject(new Error('error'))
       await flushPromises()
       expect(wrapper.text()).toBe('error')
     })
@@ -117,23 +110,18 @@ describe('Awaited', () => {
       }
       mountWrapper({ lazy: true })
     })
-    it('displays pending with no action prop', async () => {
+    it('displays nothing with no action prop', async () => {
       mountWrapper({ actionProp: null, lazy: true })
-      expect(wrapper.text()).toBe('pending')
+      expect(wrapper.text()).toBe('')
     })
     it('display pending when function passed', async () => {
+      intersect([{ intersectionRatio: 1 }])
+      await waitDelay()
       expect(wrapper.text()).toBe('pending')
     })
     it('display data when function resolves', async () => {
       intersect([{ intersectionRatio: 1 }])
-      resolve()
-      await flushPromises()
-      expect(wrapper.text()).toBe('data')
-    })
-    it('display data when Vuex action resolves', async () => {
-      mountWrapper({ actionProp: 'foo', lazy: true })
-      intersect([{ intersectionRatio: 1 }])
-      resolve()
+      resolve('data')
       await flushPromises()
       expect(wrapper.text()).toBe('data')
     })
@@ -143,8 +131,8 @@ describe('Awaited', () => {
       await flushPromises()
       expect(wrapper.text()).toBe('error')
     })
-    it('unobserve element on destroy', async () => {
-      wrapper.destroy()
+    it('unobserve element on unmount', async () => {
+      wrapper.unmount()
       expect(unobserveFn).toBeCalled()
     })
   })

@@ -1,7 +1,61 @@
-import 'core-js/modules/es.number.constructor';
-import 'core-js/modules/es.object.to-string';
+import 'core-js/modules/es.number.constructor.js';
+import 'core-js/modules/es.object.to-string.js';
+import 'regenerator-runtime/runtime.js';
+import { isVue3, Vue } from 'vue-demi';
 
-var awaited = {
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
+
+var _props$data$mounted$m;
+var index = (_props$data$mounted$m = {
   props: {
     action: {
       type: [String, Function, Promise],
@@ -34,6 +88,9 @@ var awaited = {
     height: {
       type: Number,
       default: 0
+    },
+    watch: {
+      type: [Number, String, Array, Object, Function]
     }
   },
   data: function data() {
@@ -47,123 +104,132 @@ var awaited = {
     };
   },
   mounted: function mounted() {
-    if (this.action && isString(this.action)) assert(this.$store, "Vuex doesn't installed.");
+    var _this = this;
+
     this.target = this.$el;
     if (this.lazy) this.observe();else this.run();
-  },
-  destroyed: function destroyed() {
-    this.unobserve();
-  },
-  methods: {
-    run: function run() {
-      var _this = this;
+    if (this.watch) this.$watch(typeof this.watch === 'function' ? this.watch : function () {
+      return _this.watch;
+    }, this.run);
+  }
+}, _defineProperty(_props$data$mounted$m, isVue3 ? 'unmounted' : 'destroyed', function () {
+  this.unobserve();
+}), _defineProperty(_props$data$mounted$m, "methods", {
+  run: function run() {
+    var _this2 = this;
 
-      if (this.delay > 0) {
-        this.delayTimer = setTimeout(function () {
-          _this.handler();
+    if (this.delay > 0) {
+      this.delayTimer = setTimeout(function () {
+        _this2.handler();
 
-          clearTimeout(_this.delayTimer);
-        }, this.delay);
-      } else {
-        this.handler();
-      }
-    },
-    handler: function handler() {
-      var _this2 = this;
-
-      if (!this.action) {
-        this.resolved = true;
-        return;
-      }
-
-      var promise = getPromiseFromAction(this, this.action);
-      this.resolved = false;
-      this.startpendingDelay();
-      promise.then(function (data) {
-        _this2.data = data;
-        _this2.resolved = true;
-      }).catch(function (error) {
-        _this2.error = error;
-        _this2.resolved = true;
-      });
-    },
-    observe: function observe() {
-      var _this3 = this;
-
-      this.observer = new IntersectionObserver(function (entries) {
-        if (entries[0].intersectionRatio <= 0) return;
-
-        _this3.unobserve();
-
-        _this3.run();
-      });
-      this.observer.observe(this.target);
-    },
-    unobserve: function unobserve() {
-      if (this.observer && this.target) {
-        this.observer.unobserve(this.target);
-        this.target = null;
-      }
-    },
-    startpendingDelay: function startpendingDelay() {
-      var _this4 = this;
-
-      if (this.pendingDelay > 0) {
-        this.isPendingDelay = true;
-        this.pendingDelayTimer = setTimeout(function () {
-          _this4.isPendingDelay = false;
-          clearTimeout(_this4.pendingDelayTimer);
-        }, this.pendingDelay);
-      } else {
-        this.isPendingDelay = false;
-      }
+        clearTimeout(_this2.delayTimer);
+      }, this.delay);
+    } else {
+      this.handler();
     }
   },
-  render: function render(h) {
-    if (this.error && !this.loading) {
-      return getSlot(this, h, 'error', {
-        error: this.error
-      });
-    }
+  handler: function handler() {
+    var _this3 = this;
 
-    if (this.resolved && !this.loading) {
-      return getSlot(this, h, 'default', {
-        data: this.data
-      });
-    }
+    return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var promise;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (_this3.action) {
+                _context.next = 3;
+                break;
+              }
 
-    if (this.isPendingDelay) return h(this.tag, {
-      style: {
-        height: "".concat(this.height, "px")
-      }
+              _this3.resolved = true;
+              return _context.abrupt("return");
+
+            case 3:
+              promise = isFunction(_this3.action) ? _this3.action() : _this3.action;
+              _this3.resolved = false;
+
+              _this3.startpendingDelay();
+
+              _context.prev = 6;
+              _context.next = 9;
+              return promise;
+
+            case 9:
+              _this3.data = _context.sent;
+              _this3.resolved = true;
+              _context.next = 17;
+              break;
+
+            case 13:
+              _context.prev = 13;
+              _context.t0 = _context["catch"](6);
+              _this3.error = _context.t0;
+              _this3.resolved = true;
+
+            case 17:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, null, [[6, 13]]);
+    }))();
+  },
+  observe: function observe() {
+    var _this4 = this;
+
+    this.observer = new IntersectionObserver(function (entries) {
+      if (entries[0].intersectionRatio <= 0) return;
+
+      _this4.unobserve();
+
+      _this4.run();
     });
-    return getSlot(this, h, 'pending', {
+    this.observer.observe(this.target);
+  },
+  unobserve: function unobserve() {
+    if (this.observer && this.target) {
+      this.observer.unobserve(this.target);
+      this.target = null;
+    }
+  },
+  startpendingDelay: function startpendingDelay() {
+    var _this5 = this;
+
+    if (this.pendingDelay > 0) {
+      this.isPendingDelay = true;
+      this.pendingDelayTimer = setTimeout(function () {
+        _this5.isPendingDelay = false;
+        clearTimeout(_this5.pendingDelayTimer);
+      }, this.pendingDelay);
+    } else {
+      this.isPendingDelay = false;
+    }
+  }
+}), _defineProperty(_props$data$mounted$m, "render", function render(createElement) {
+  var h = isVue3 ? Vue.h : createElement;
+
+  if (this.error && !this.loading) {
+    return getSlot(this, h, 'error', {
+      error: this.error
+    });
+  }
+
+  if (this.resolved && !this.loading) {
+    return getSlot(this, h, 'default', {
       data: this.data
     });
   }
-};
 
-function ensurePromise(func) {
-  return new Promise(function (resolve, reject) {
-    try {
-      var result = func();
-      isPromise(result) && result.then(resolve, reject);
-      resolve(result);
-    } catch (error) {
-      reject(error);
+  if (this.isPendingDelay) return h(this.tag, {
+    style: {
+      height: "".concat(this.height, "px")
     }
   });
-}
-
-function getPromiseFromAction(vm, action) {
-  if (isString(action)) return ensurePromise(function () {
-    return vm.$store.dispatch(action);
+  return getSlot(this, h, 'pending', {
+    data: this.data
   });
-  if (isFunction(action)) return ensurePromise(function () {
-    return action();
-  });
-  if (isPromise(action)) return action;
-}
+}), _props$data$mounted$m);
 
 function convertNodes(h, wrapperTag, nodes) {
   if (nodes.length > 1 || !nodes[0].tag) return h(wrapperTag, {}, nodes);
@@ -172,73 +238,13 @@ function convertNodes(h, wrapperTag, nodes) {
 
 function getSlot(vm, h, name, data) {
   var slot = vm.$slots[name];
-  var scopedSlot = vm.$scopedSlots[name];
+  var scopedSlot = isVue3 ? vm.$slots[name] : vm.$scopedSlots[name];
   var node = scopedSlot ? scopedSlot(data) : slot;
   return Array.isArray(node) ? convertNodes(h, vm.tag, node) : node;
-}
-
-function isString(value) {
-  return typeof value === 'string';
 }
 
 function isFunction(value) {
   return typeof value === 'function';
 }
 
-function isPromise(value) {
-  return value && isFunction(value.then) && isFunction(value.catch);
-}
-
-function assert(condition, message) {
-  if (!condition) {
-    throw new Error("[vue-awaited] ".concat(message));
-  }
-}
-
-function awaitedComponent (_ref) {
-  var asyncComponent = _ref.asyncComponent,
-      loading = _ref.loading;
-  var resolveComponent;
-  return function () {
-    return {
-      // resolve a component eventually.
-      component: new Promise(function (resolve) {
-        resolveComponent = resolve;
-      }),
-      loading: {
-        mounted: function mounted() {
-          var _this = this;
-
-          // if `IntersectionObserver` is not supported.
-          if (!('IntersectionObserver' in window)) {
-            asyncComponent().then(resolveComponent);
-            return;
-          }
-
-          var observer = new IntersectionObserver(function (entries) {
-            // use `intersectionRatio` instead of `isIntersecting`
-            // https://github.com/w3c/IntersectionObserver/issues/211
-            if (entries[0].intersectionRatio <= 0) return; // cleanup the observer
-
-            observer.unobserve(_this.$el);
-            asyncComponent().then(resolveComponent);
-          });
-          observer.observe(this.$el);
-        },
-        render: function render(h) {
-          return loading || h('div');
-        }
-      }
-    };
-  };
-}
-
-var main = {
-  install: function install(Vue) {
-    Vue.component('awaited', awaited);
-    Vue.component('awaitedComponent', awaitedComponent);
-  }
-};
-
-export default main;
-export { awaited, awaitedComponent };
+export default index;

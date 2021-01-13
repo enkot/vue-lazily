@@ -1,22 +1,18 @@
-// import vue from 'rollup-plugin-vue'
-// import resolve from 'rollup-plugin-node-resolve'
-// import commonjs from 'rollup-plugin-commonjs'
-// import replace from 'rollup-plugin-replace'
 import babel from 'rollup-plugin-babel'
 
 export default [
   {
-    input: 'src/main.js',
+    input: 'src/index.js',
     output: [
       {
         format: 'es',
         file: 'dist/index.es.js',
-        exports: 'named'
+        exports: 'default'
       },
       {
         format: 'cjs',
         file: 'dist/index.cjs.js',
-        exports: 'named'
+        exports: 'default'
       }
     ],
     plugins: [
@@ -29,8 +25,7 @@ export default [
             {
               modules: false,
               targets: {
-                node: 8,
-                ie: 11
+                node: 10
               }
             }
           ]
