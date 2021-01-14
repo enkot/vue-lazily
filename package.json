@@ -13,9 +13,11 @@
     "coveralls": "vue-cli-service test:unit --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "dependencies": {
-    "core-js": "^3.6.5",
-    "vue": "^3.0.0",
     "vue-demi": "^0.6.0"
+  },
+  "peerDependencies": {
+    "core-js": "^3.6.5",
+    "vue": "^3.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^5.0.0-alpha.2",
