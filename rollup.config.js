@@ -7,12 +7,12 @@ export default [
       {
         format: 'es',
         file: 'dist/index.es.js',
-        exports: 'default'
+        exports: 'named'
       },
       {
         format: 'cjs',
         file: 'dist/index.cjs.js',
-        exports: 'default'
+        exports: 'named'
       }
     ],
     plugins: [
