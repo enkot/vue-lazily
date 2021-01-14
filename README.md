@@ -1,3 +1,5 @@
+![alt text](https://github.com/enkot/vue-awaited/blob/main/public/emoji-glossy-person.png?raw=true)
+
 # VueAwaited
 
 [![Build Status](https://travis-ci.org/enkot/vue-awaited.svg?branch=master)](https://travis-ci.org/enkot/vue-awaited)
@@ -9,10 +11,10 @@ Inspired by [vue-promised](https://github.com/posva/vue-promised), recommend to 
 
 ## Features
 
-- Works for both Vue 3 and 2
-- Fetch and show data directly in the template
-- Loads data when element becomes visible
-- Slots for loading and error states
+- ⚔️ Works for both Vue 3 and 2
+- 📝 Fetch, show and manage data directly in the template
+- 👁️ Loads data when the element becomes visible
+- 📍 Slots for loading and error states
 
 ## Why do this library exist?
 
@@ -144,17 +146,17 @@ _No need to call `.json()` method on response object, it will be done automatica
 
 All of these props could be passed to global config as well as directly to component.
 
-| Name            | Description                                                                                                                                                                                 | Type                                      |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| `action`        | Url string, method or promise object                                                                                                                                                        | `String, Function, Promise`               |
-| `lazy`          | Enables lazy loading which uses Intersection Observer API under the hood                                                                                                                    | `Boolean`                                 |
-| `delay`         | Delay in ms to wait before displaying the pending slot. Defaults to `200`                                                                                                                   | `Number`                                  |
-| `margin`        | `rootMargin` option for IntersectionObserver class. Defaults to `0px`. See [docs](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API#Intersection_observer_options) | `String`                                  |
-| `threshold`     | `threshold` option for IntersectionObserver class. Defaults to `1.0`. See [docs](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API#Intersection_observer_options)  | `String`                                  |
-| `height`        | Height of an element that is shown before pending slot. Defaults to `0px`                                                                                                                   | `String`                                  |
-| `watch`         | Reactive value or watch function to watch changes and rerun action                                                                                                                          | `Number, String, Array, Object, Function` |
-| `fetchOptions`  | Options for `fetch` function                                                                                                                                                                | `Number`                                  |
-| `actionHandler` | Custom action handler. F.e to use `axios` library                                                                                                                                           | `Number`                                  |
+| Name            | Description                                                                                                                                                                                 | Type                                          |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| `action`        | Url string, method or promise object                                                                                                                                                        | `String` `Function` `Promise`                 |
+| `lazy`          | Enables lazy loading which uses Intersection Observer API under the hood                                                                                                                    | `Boolean`                                     |
+| `delay`         | Delay in ms to wait before displaying the pending slot. Defaults to `200`                                                                                                                   | `Number`                                      |
+| `margin`        | `rootMargin` option for IntersectionObserver class. Defaults to `0px`. See [docs](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API#Intersection_observer_options) | `String`                                      |
+| `threshold`     | `threshold` option for IntersectionObserver class. Defaults to `1.0`. See [docs](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API#Intersection_observer_options)  | `String`                                      |
+| `height`        | Height of an element that is shown before pending slot. Defaults to `0px`                                                                                                                   | `String`                                      |
+| `watch`         | Reactive value or watch function to watch changes and rerun action                                                                                                                          | `Number` `String` `Array` `Object` `Function` |
+| `fetchOptions`  | Options for `fetch` function                                                                                                                                                                | `Number`                                      |
+| `actionHandler` | Custom action handler. F.e to use `axios` library                                                                                                                                           | `Number`                                      |
 
 ### slots
 

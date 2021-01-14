@@ -7,8 +7,10 @@
   "scripts": {
     "dev": "vue-cli-service serve examples/main.js",
     "build": "rollup -c",
+    "lint": "vue-cli-service lint",
     "test": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "test:watch": "vue-cli-service test:unit --watch",
+    "coveralls": "vue-cli-service test:unit --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "dependencies": {
     "core-js": "^3.6.5",
