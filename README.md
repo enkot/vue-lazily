@@ -8,7 +8,7 @@
 
 VueAwaited is a Vue.js component for convenient data fetching and lazy loading.
 
-Inspired by [vue-promised](https://github.com/posva/vue-promised), recommend to look at it if you need loading/errors handling without lazy loading.
+> Inspired by [vue-promised](https://github.com/posva/vue-promised), recommend to look at it if you need loading/errors handling without lazy loading.
 
 ## Features
 
@@ -85,7 +85,7 @@ Using url string:
 <template>
   <awaited
     action="https://rickandmortyapi.com/api/character/1"
-    #default="{ image, name, species }"
+    #default="{ data: { image, name, species } }"
   >
     <img :src="image" :alt="name" />
     <h2>{{ name }}</h2>
