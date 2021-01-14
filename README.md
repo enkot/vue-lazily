@@ -16,6 +16,7 @@ Small Vue.js component for convenient data fetching and lazy loading.
 - 📝 Fetch, show and manage data directly in the template
 - 👁️ Loads data when the element becomes visible
 - 📍 Slots for loading and error states
+- No dependencies.
 
 ## Why does this library exist?
 

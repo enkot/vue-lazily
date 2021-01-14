@@ -51,7 +51,6 @@ describe('Awaited', () => {
 
   beforeEach(() => {
     mountWrapper()
-    global.Response = function() {}
   })
   describe('without lazy load', () => {
     it('displays default data with no action prop', async () => {

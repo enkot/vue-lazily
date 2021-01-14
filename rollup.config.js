@@ -1,36 +1,23 @@
-import babel from 'rollup-plugin-babel'
+import commonjs from '@rollup/plugin-commonjs'
+import resolve from '@rollup/plugin-node-resolve'
+import buble from '@rollup/plugin-buble'
+
+import packageConfig from './package.json'
 
 export default [
   {
     input: 'src/index.js',
-    output: [
-      {
-        format: 'es',
-        file: 'dist/index.es.js',
-        exports: 'named'
-      },
-      {
-        format: 'cjs',
-        file: 'dist/index.cjs.js',
-        exports: 'named'
-      }
-    ],
-    plugins: [
-      babel({
-        babelrc: false,
-        runtimeHelpers: true,
-        presets: [
-          [
-            '@babel/preset-env',
-            {
-              modules: false,
-              targets: {
-                node: 10
-              }
-            }
-          ]
-        ]
-      })
-    ]
+    output: {
+      file: `dist/index.js`,
+      format: 'cjs',
+      name: packageConfig.name,
+      exports: 'named',
+      banner:
+        `/* vue-awaited v${packageConfig.version} ` +
+        '| (c) Taras Batenkov and contributors ' +
+        '| https://github.com/enkot/vue-awaited/blob/master/LICENSE ' +
+        '*/'
+    },
+    plugins: [commonjs(), resolve(), buble()]
   }
 ]

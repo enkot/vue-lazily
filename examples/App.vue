@@ -11,3 +11,12 @@
     </awaited>
   </div>
 </template>
+
+<script>
+import { awaited } from '../src'
+export default {
+  components: {
+    awaited
+  }
+}
+</script>

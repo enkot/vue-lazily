@@ -4,9 +4,9 @@ export { awaited }
 export default {
   install(app, { name, props } = {}) {
     if (props)
-      Object.entries(props).forEach(([name, value]) => {
+      Object.keys(props).forEach(name => {
         const prop = awaited.props[name]
-        if (prop) prop.default = value
+        if (prop) prop.default = props[name]
       })
 
     app.component(name || 'awaited', awaited)

@@ -1,4 +1,6 @@
-import { Vue, isVue3 } from 'vue-demi'
+const Vue = require('vue')
+
+const isVue3 = !!Vue.h
 
 export default {
   props: {
@@ -56,7 +58,7 @@ export default {
 
     if (this.watch)
       this.$watch(
-        typeof this.watch === 'function' ? this.watch : () => this.watch,
+        isFunction(this.watch) ? this.watch : () => this.watch,
         this.run
       )
   },
@@ -64,7 +66,7 @@ export default {
     this.unobserve()
   },
   methods: {
-    async run() {
+    run() {
       if (!this.action) {
         this.resolved = true
         return
@@ -74,28 +76,37 @@ export default {
       this.startDelay()
 
       try {
-        this.data = this.actionHandler
+        const result = this.actionHandler
           ? this.actionHandler(this.action)
-          : await this.getData(this.action)
+          : this.getData(this.action)
+
+        if (isPromise(result))
+          return result
+            .then(data => (this.data = data))
+            .catch(error => (this.error = error))
+            .finally(() => (this.resolved = true))
+
+        this.data = result
       } catch (error) {
         this.error = error
-      } finally {
-        this.resolved = true
       }
+
+      this.resolved = true
     },
-    async getData(action) {
+    getData(action) {
       switch (typeof action) {
         case 'string':
-          return fetch(action, { ...this.fetchOptions }).then(data =>
-            data.json()
-          )
+          return fetch(
+            action,
+            Object.assign({}, this.fetchOptions)
+          ).then(data => data.json())
         case 'function':
-          const result = await action()
-          return result instanceof Response ? result.json() : result
+          return action()
         default:
           return action
       }
     },
+    runFunction() {},
     observe() {
       this.observer = new IntersectionObserver(
         entries => {
@@ -129,8 +140,8 @@ export default {
       }
     }
   },
-  render(createElement) {
-    const h = isVue3 ? Vue.h : createElement
+  render(h) {
+    if (isVue3) h = Vue.h
 
     if (this.error) {
       return getSlot(this, h, 'error', { error: this.error })
@@ -167,4 +178,12 @@ function getSlot(vm, h, name, data) {
   const node = scopedSlot ? scopedSlot(data) : slot
 
   return Array.isArray(node) ? convertNodes(h, vm.tag, node) : node
+}
+
+function isPromise(value) {
+  return value && isFunction(value.then) && isFunction(value.catch)
+}
+
+function isFunction(value) {
+  return typeof value === 'function'
 }
