@@ -1,9 +1,10 @@
-![alt text](https://github.com/enkot/vue-awaited/blob/main/public/emoji-glossy-person.png?raw=true)
+<img alt="Logo" src="https://github.com/enkot/vue-awaited/blob/master/public/emoji-glossy-person.png?raw=true" height="140"/>
 
 # VueAwaited
 
 [![Build Status](https://travis-ci.org/enkot/vue-awaited.svg?branch=master)](https://travis-ci.org/enkot/vue-awaited)
 [![Coverage Status](https://coveralls.io/repos/github/enkot/vue-awaited/badge.svg?branch=master)](https://coveralls.io/github/enkot/vue-awaited?branch=master)
+<img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
 
 VueAwaited is a Vue.js component for convenient data fetching and lazy loading.
 
