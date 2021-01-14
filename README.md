@@ -27,15 +27,11 @@ VueAwaited solves these problems by loading data only when it becomes visible an
 
 ## Installation
 
-You can install it via npm or yarn.
-
-### yarn
-
-```sh
+```console
 yarn add vue-awaited
 ```
 
-### npm
+or
 
 ```sh
 npm i vue-awaited
@@ -161,7 +157,7 @@ All of these props could be passed to global config as well as directly to compo
 
 ### slots
 
-All slots but `combined` can be used as _scoped_ or regular slots.
+All slots can be used as _scoped_ or regular slots.
 
 | Name      | Description                                                             | Scope                    |
 | --------- | ----------------------------------------------------------------------- | ------------------------ |
