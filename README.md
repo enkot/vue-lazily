@@ -27,7 +27,7 @@ VueAwaited solves these problems by loading data only when it becomes visible an
 
 ## Installation
 
-```console
+```sh
 yarn add vue-awaited
 ```
 
