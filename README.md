@@ -17,7 +17,7 @@ VueAwaited is a Vue.js component for convenient data fetching and lazy loading.
 - 👁️ Loads data when the element becomes visible
 - 📍 Slots for loading and error states
 
-## Why do this library exist?
+## Why does this library exist?
 
 Usually, on big pages, rendering all content at once can cause performance problems with big "Time to Interactive" or "Largest Contentful Paint" time, or even bigger problem if SSR used - server should render all the content before user could see the page.
 
