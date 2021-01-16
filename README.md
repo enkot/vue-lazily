@@ -5,8 +5,8 @@
   </h1>
 </p>
 
-[![Build Status](https://travis-ci.org/enkot/vue-awaited.svg?branch=master)](https://travis-ci.org/enkot/vue-awaited)
-[![Coverage Status](https://coveralls.io/repos/github/enkot/vue-awaited/badge.svg?branch=master)](https://coveralls.io/github/enkot/vue-awaited?branch=master)
+[![Build Status](https://travis-ci.org/enkot/vue-lazily.svg?branch=master)](https://travis-ci.org/enkot/vue-lazily)
+[![Coverage Status](https://coveralls.io/repos/github/enkot/vue-lazily/badge.svg?branch=master)](https://coveralls.io/github/enkot/vue-lazily?branch=master)
 <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
 
 The easiest way to lazy load your content.
