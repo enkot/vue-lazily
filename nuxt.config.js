@@ -1,5 +1,8 @@
 export default {
   target: 'static',
+  router: {
+    base: '/vue-lazily/'
+  },
   generate: {
     dir: 'docs',
     subFolders: false
