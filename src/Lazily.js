@@ -1,5 +1,7 @@
 const Vue = require('vue')
 
+const DEFAULT_DELAY = 200
+
 const isVue3 = !!Vue.h
 
 export default {
@@ -13,8 +15,7 @@ export default {
       default: true
     },
     delay: {
-      type: Number,
-      default: 200
+      type: [Number, Boolean]
     },
     margin: {
       type: String
@@ -40,14 +41,17 @@ export default {
       type: Function
     }
   },
-  data: () => ({
-    resolved: false,
-    error: null,
-    data: null,
-    observer: null,
-    target: null,
-    isDelay: true
-  }),
+  data() {
+    return {
+      resolved: false,
+      error: null,
+      data: null,
+      observer: null,
+      target: null,
+      observed: false,
+      isDelay: !!this.delay
+    }
+  },
   mounted() {
     this.target = this.$el
 
@@ -67,6 +71,8 @@ export default {
   },
   methods: {
     run() {
+      this.observed = true
+
       if (!this.action) {
         this.resolved = true
         return
@@ -129,12 +135,14 @@ export default {
       }
     },
     startDelay() {
-      if (this.delay > 0) {
-        this.isDelay = true
-        const delayTimer = setTimeout(() => {
-          this.isDelay = false
-          clearTimeout(delayTimer)
-        }, this.delay)
+      if (this.delay) {
+        const delayTimer = setTimeout(
+          () => {
+            this.isDelay = false
+            clearTimeout(delayTimer)
+          },
+          typeof +this.delay === 'number' ? this.delay : DEFAULT_DELAY
+        )
       } else {
         this.isDelay = false
       }
@@ -163,7 +171,15 @@ export default {
           : null
       )
 
-    return getSlot(this, h, 'pending', { data: this.data })
+    return getSlot(this, h, 'pending', {
+      data: this.data,
+      observed: this.observed
+    })
+  },
+  watch: {
+    isDelay(value) {
+      console.log('value', value)
+    }
   }
 }
 

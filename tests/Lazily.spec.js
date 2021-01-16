@@ -1,13 +1,13 @@
 import { mount } from '@vue/test-utils'
 import fakePromise from 'faked-promise'
-import { awaited } from '../src'
+import { Lazily } from '../src'
 
 const DELAY = 10 // reduce default delay to run tests faster
 
 const flushPromises = () => new Promise(setImmediate)
 const waitDelay = () => new Promise(resolve => setTimeout(resolve, DELAY))
 
-describe('Awaited', () => {
+describe('Lazily', () => {
   let wrapper, promise, resolve, reject
 
   const action = function() {
@@ -29,7 +29,7 @@ describe('Awaited', () => {
     lazy = false,
     delay = DELAY
   } = {}) => {
-    wrapper = mount(awaited, {
+    wrapper = mount(Lazily, {
       propsData: { action: actionProp, lazy, delay },
       scopedSlots: {
         default: `<span slot-scope="props">{{ props.data || 'default' }}</span>`,

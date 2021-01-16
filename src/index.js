@@ -1,14 +1,14 @@
-import awaited from './awaited'
+import Lazily from './Lazily'
 
-export { awaited }
+export { Lazily }
 export default {
   install(app, { name, props } = {}) {
     if (props)
       Object.keys(props).forEach(name => {
-        const prop = awaited.props[name]
+        const prop = Lazily.props[name]
         if (prop) prop.default = props[name]
       })
 
-    app.component(name || 'awaited', awaited)
+    app.component(name || 'Lazily', Lazily)
   }
 }
