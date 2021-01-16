@@ -1,7 +1,7 @@
-<p style="text-align: center; -webkit-font-smoothing: antialiased;">
+<p align="center">
   <img alt="Logo" src="https://github.com/enkot/vue-awaited/blob/master/static/logo.png?raw=true" height="120"/>
-  <h1 style="text-align: center; font-size: 2.25rem; font-weight: 900;">
-    Vue<span style="color: rgba(16, 185, 129, 1)">Lazily</span>
+  <h1 align="center">
+    <b>Vue<font color="10b981">Lazily</font></b>
   </h1>
 </p>
 
@@ -49,9 +49,9 @@ npm i vue-lazily
 // Vue 2
 
 import Vue from 'vue'
-import VueAwaited from 'vue-lazily'
+import VueLazily from 'vue-lazily'
 
-Vue.use(VueAwaited, { /* options */ })
+Vue.use(VueLazily, { /* options */ })
 
 
 // Vue 3
