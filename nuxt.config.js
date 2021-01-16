@@ -1,7 +1,7 @@
 export default {
   target: 'static',
   generate: {
-    dir: 'gh_pages',
+    dir: 'docs',
     subFolders: false
   },
   head: {
