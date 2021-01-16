@@ -138,7 +138,7 @@ Using slots:
 
 | Name    | Description                             | Type     |
 | ------- | --------------------------------------- | -------- |
-| `name`  | Component name. Defaults to `awaited`   | `String` |
+| `name`  | Component name. Defaults to `Lazily`    | `String` |
 | `props` | Props which will be passed to component | `Object` |
 
 ### props
