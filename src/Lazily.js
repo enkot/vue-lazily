@@ -175,11 +175,6 @@ export default {
       data: this.data,
       observed: this.observed
     })
-  },
-  watch: {
-    isDelay(value) {
-      console.log('value', value)
-    }
   }
 }
 
