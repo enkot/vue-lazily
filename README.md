@@ -13,6 +13,8 @@ The easiest way to lazy load your content.
 
 > Inspired by [vue-promised](https://github.com/posva/vue-promised), recommend to look at it if you need loading/errors handling without lazy loading.
 
+## [Demo](https://enkot.github.io/vue-lazily)
+
 ## Features
 
 - ⚔️ Works for both Vue 3 and 2
