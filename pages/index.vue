@@ -169,7 +169,7 @@ export default {
               'https://api.themoviedb.org/3/movie/now_playing?api_key=30186d63c1df83f60479b1071afe9655&language=en-US'
             ).then((result) => result.json())
           )
-        }, 2400)
+        }, 2000)
       })
     },
     async getPopularActors() {
@@ -180,7 +180,7 @@ export default {
               'https://api.themoviedb.org/3/person/popular?api_key=30186d63c1df83f60479b1071afe9655&language=en-US'
             ).then((result) => result.json())
           )
-        }, 2400)
+        }, 2000)
       })
     }
   }
