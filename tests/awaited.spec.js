@@ -1,25 +1,11 @@
 import { mount } from '@vue/test-utils'
 import fakePromise from 'faked-promise'
-import { awaited } from '../../src'
+import { awaited } from '../src'
 
 const DELAY = 10 // reduce default delay to run tests faster
 
 const flushPromises = () => new Promise(setImmediate)
 const waitDelay = () => new Promise(resolve => setTimeout(resolve, DELAY))
-
-const slots = {
-  default: `
-    <template #default="{ data }">
-      <span>{{ data || 'default' }}</span>
-    </template>
-  `,
-  pending: '<span>pending</span>',
-  error: `
-    <template #error="{ error }">
-      <span>{{ error.message }}</span>
-    </template>
-  `
-}
 
 describe('Awaited', () => {
   let wrapper, promise, resolve, reject
@@ -44,8 +30,12 @@ describe('Awaited', () => {
     delay = DELAY
   } = {}) => {
     wrapper = mount(awaited, {
-      props: { action: actionProp, lazy, delay },
-      slots
+      propsData: { action: actionProp, lazy, delay },
+      scopedSlots: {
+        default: `<span slot-scope="props">{{ props.data || 'default' }}</span>`,
+        pending: '<span>pending</span>',
+        error: `<span slot-scope="props">{{ props.error.message }}</span>`
+      }
     })
   }
 
@@ -72,7 +62,7 @@ describe('Awaited', () => {
     })
     it('display data when sync function resolves', async () => {
       mountWrapper({ actionProp: syncAction })
-      await flushPromises()
+      // await flushPromises()
       expect(wrapper.text()).toBe('data')
     })
     it('display data when promise resolves', async () => {
@@ -133,7 +123,7 @@ describe('Awaited', () => {
       expect(wrapper.text()).toBe('error')
     })
     it('unobserve element on unmount', async () => {
-      wrapper.unmount()
+      wrapper.destroy()
       expect(unobserveFn).toBeCalled()
     })
   })

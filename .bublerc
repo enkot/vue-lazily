@@ -1,0 +1,7 @@
+{
+    "transforms": {
+      "modules": false,
+      "asyncAwait": false 
+    },
+    "objectAssign": "Object.assign"
+}

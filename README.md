@@ -6,7 +6,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/enkot/vue-awaited/badge.svg?branch=master)](https://coveralls.io/github/enkot/vue-awaited?branch=master)
 <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
 
-Small Vue.js component for convenient data fetching and lazy loading.
+Small Vue.js component to load your content lazily.
 
 > Inspired by [vue-promised](https://github.com/posva/vue-promised), recommend to look at it if you need loading/errors handling without lazy loading.
 

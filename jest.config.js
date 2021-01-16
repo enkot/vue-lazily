@@ -1,6 +1,13 @@
 module.exports = {
-  preset: "@vue/cli-plugin-unit-jest",
+  moduleFileExtensions: ['js'],
+  watchman: false,
+  moduleNameMapper: {
+    '^~/(.*)$': '<rootDir>/$1',
+    '^~~/(.*)$': '<rootDir>/$1',
+    '^@/(.*)$': '<rootDir>/$1'
+  },
   transform: {
-    "^.+\\.vue$": "vue-jest"
-  }
-};
+    '^.+\\.js$': '<rootDir>/node_modules/buble-jest'
+  },
+  collectCoverage: true
+}

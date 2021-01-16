@@ -1,5 +1,4 @@
-import fakePromise from 'faked-promise'
-import awaited from '../../src'
+import awaited from '../src'
 
 describe('Index', () => {
   let app, passedName, passedComponent

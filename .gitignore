@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 coverage
+.nuxt
 
 # local env files
 .env.local
