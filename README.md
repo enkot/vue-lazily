@@ -169,17 +169,13 @@ All slots can be used as _scoped_ or regular slots.
 | _default_ | Content to display once the action has been successfully resolved       | resolved `data`                             |
 | `error`   | Content to display if the action is rejected                            | throwed `error`                             |
 
-## Author
-
-👤 **Enkot**
-
-- Website: [@enkot](https://medium.com/@enkot)
-- Twitter: [@enkot\_](https://twitter.com/enkot_)
-- Github: [@enkot](https://github.com/enkot)
-
 ## 🤝 Contributing
 
 Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/enkot/vue-awaited/issues).
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
 
 ## License
 

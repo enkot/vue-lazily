@@ -1,6 +1,6 @@
 <template>
   <div class="w-full max-w-7xl mx-auto pb-10">
-    <div class="flex flex-col justify-center items-center h-screen p-6">
+    <div class="flex flex-col justify-center items-center min-h-screen p-6">
       <img src="~/static/logo.png" alt="Awaited" width="120" />
       <h1 class="text-4xl sm:text-6xl font-black mt-2">
         Vue<span class="text-green-500">Lazily</span>
@@ -11,12 +11,17 @@
       <div class="max-w-full overflow-hidden">
         <highlightjs
           autodetect
-          code=" yarn add vue-lazily // npm i vue-lazily"
+          code="  yarn add vue-lazily // npm i vue-lazily"
           class="mt-8 rounded-md overflow-hidden"
         />
         <highlightjs
+          language="javascript"
+          :code="importMarkup"
+          class="mt-4 rounded-md overflow-hidden"
+        />
+        <highlightjs
           language="html"
-          :code="markup"
+          :code="templateMarkup"
           class="mt-4 rounded-md overflow-hidden"
         />
       </div>
@@ -138,7 +143,12 @@ export default {
   },
   data() {
     return {
-      markup: `
+      importMarkup: `
+  import VueLazily from 'vue-lazily'
+  ...
+  app.use(VueLazily) // Vue.use(VueLazily) 
+      `,
+      templateMarkup: `
   <template>
     <Lazily action="https://api.themoviedb.org/3/movie/now_playing"> 
       <template #pending> ... </template>
@@ -146,7 +156,7 @@ export default {
       <template #default="{ data }"> ... </template>
     </Lazily>
   </template>
-      `
+    `
     }
   },
   head() {

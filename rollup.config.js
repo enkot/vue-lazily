@@ -13,9 +13,9 @@ export default [
       name: packageConfig.name,
       exports: 'named',
       banner:
-        `/* vue-awaited v${packageConfig.version} ` +
+        `/* ${packageConfig.name} v${packageConfig.version} ` +
         '| (c) Taras Batenkov and contributors ' +
-        '| https://github.com/enkot/vue-awaited/blob/master/LICENSE ' +
+        `| https://github.com/enkot/${packageConfig.name}/blob/master/LICENSE ` +
         '*/'
     },
     plugins: [commonjs(), resolve(), buble()]

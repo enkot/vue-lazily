@@ -1,4 +1,4 @@
-/* vue-awaited v1.0.1 | (c) Taras Batenkov and contributors | https://github.com/enkot/vue-awaited/blob/master/LICENSE */
+/* vue-lazily v1.0.2 | (c) Taras Batenkov and contributors | https://github.com/enkot/vue-lazily/blob/master/LICENSE */
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
