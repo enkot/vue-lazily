@@ -7,7 +7,7 @@ const isVue3 = !!Vue.h
 export default {
   props: {
     action: {
-      type: [String, Function, Promise],
+      type: [String, Function, Promise, Object],
       required: false
     },
     lazy: {
@@ -32,10 +32,6 @@ export default {
     },
     watch: {
       type: [Number, String, Array, Object, Function]
-    },
-    fetchOptions: {
-      type: Object,
-      default: () => {}
     },
     actionHandler: {
       type: Function
@@ -102,10 +98,7 @@ export default {
     getData(action) {
       switch (typeof action) {
         case 'string':
-          return fetch(
-            action,
-            Object.assign({}, this.fetchOptions)
-          ).then(data => data.json())
+          return fetch(action).then(data => data.json())
         case 'function':
           return action()
         default:

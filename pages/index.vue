@@ -119,9 +119,12 @@
         </div>
       </template>
     </Lazily>
-    <div class="flex justify-center items-center mt-16">
-      <span class="text-gray-500 mr-2">Data source:</span>
-      <a href="https://www.themoviedb.org/" target="blank">
+    <div class="flex flex-col justify-center items-center mt-16">
+      <span class="text-gray-400 mt-2 italic px-6 text-center">
+        Requests are artificially slowed down
+      </span>
+      <span class="text-gray-500 mt-4">Data source:</span>
+      <a href="https://www.themoviedb.org/" target="blank" class="mt-2">
         <img
           src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg"
           alt="TheMovieDB"

@@ -111,7 +111,9 @@ Using component's method:
 export default {
   methods: {
     getCharacter() {
-      return fetch('https://rickandmortyapi.com/api/character/1')
+      return fetch('https://rickandmortyapi.com/api/character/1').then(res =>
+        res.json()
+      )
     }
   }
 }
@@ -149,15 +151,14 @@ All of these props could be passed to global config as well as directly to compo
 
 | Name            | Description                                                                                                                                                                                 | Type                                          |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
-| `action`        | Url string, method or promise object                                                                                                                                                        | `String` `Function` `Promise`                 |
+| `action`        | Url string, method or promise for default action handler. Or anything else that could be passed to custom `actionHandler`                                                                   | `any`                                         |
 | `lazy`          | Enables lazy loading which uses Intersection Observer API under the hood. Defaults to `true`                                                                                                | `Boolean`                                     |
 | `delay`         | Delay in ms to wait before displaying the pending slot. Disabled by default, if passed `true` - defaults to `200`. If disabled - pending slot will be rendered in SSR                       | `Boolean` `Number`                            |
 | `margin`        | `rootMargin` option for IntersectionObserver class. Defaults to `0px`. See [docs](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API#Intersection_observer_options) | `String`                                      |
 | `threshold`     | `threshold` option for IntersectionObserver class. Defaults to `0`. See [docs](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API#Intersection_observer_options)    | `String`                                      |
 | `height`        | Height of an element that is shown before pending slot. Defaults to `0px`                                                                                                                   | `String`                                      |
 | `watch`         | Reactive value or watch function to watch changes and rerun action                                                                                                                          | `Number` `String` `Array` `Object` `Function` |
-| `fetchOptions`  | Options for `fetch` function                                                                                                                                                                | `Number`                                      |
-| `actionHandler` | Custom action handler. F.e. to use `axios` or `apollo`                                                                                                                                      | `Number`                                      |
+| `actionHandler` | Custom action handler. F.e. to use custom `fetch`, `axios` or `apollo`. Gets action prop as argument                                                                                        | `Function`                                    |
 
 ### slots
 

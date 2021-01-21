@@ -1,4 +1,4 @@
-/* vue-lazily v1.0.2 | (c) Taras Batenkov and contributors | https://github.com/enkot/vue-lazily/blob/master/LICENSE */
+/* vue-lazily v1.1.3 | (c) Taras Batenkov and contributors | https://github.com/enkot/vue-lazily/blob/master/LICENSE */
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -13,7 +13,7 @@ var isVue3 = !!Vue.h;
 var Lazily = ( obj = {
   props: {
     action: {
-      type: [String, Function, Promise],
+      type: [String, Function, Promise, Object],
       required: false
     },
     lazy: {
@@ -38,10 +38,6 @@ var Lazily = ( obj = {
     },
     watch: {
       type: [Number, String, Array, Object, Function]
-    },
-    fetchOptions: {
-      type: Object,
-      default: function () {}
     },
     actionHandler: {
       type: Function
@@ -111,10 +107,7 @@ var Lazily = ( obj = {
     getData: function getData(action) {
       switch (typeof action) {
         case 'string':
-          return fetch(
-            action,
-            Object.assign({}, this.fetchOptions)
-          ).then(function (data) { return data.json(); })
+          return fetch(action).then(function (data) { return data.json(); })
         case 'function':
           return action()
         default:
