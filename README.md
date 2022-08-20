@@ -51,29 +51,29 @@ npm i vue-awaited
 // Vue 2
 
 import Vue from 'vue'
-import VueLazily from 'vue-awaited'
+import VueAwaited from 'vue-awaited'
 
-Vue.use(VueLazily, { /* options */ })
+Vue.use(VueAwaited, { /* options */ })
 
 
 // Vue 3
 
 import { createApp } from 'vue'
-import VueLazily from 'vue-awaited'
+import VueAwaited from 'vue-awaited'
 
 const app = createApp(App)
-app.use(VueLazily, { /* options */ }))
+app.use(VueAwaited, { /* options */ }))
 ```
 
 ### Local
 
 ```vue
 <script>
-import { Lazily } from 'vue-awaited'
+import { Awaited } from 'vue-awaited'
 
 export default {
   components: {
-    Lazily
+    Awaited
   }
 }
 </script>
@@ -85,14 +85,14 @@ Using url string:
 
 ```vue
 <template>
-  <Lazily
+  <Awaited
     action="https://rickandmortyapi.com/api/character/1"
     #default="{ data: { image, name, species } }"
   >
     <img :src="image" :alt="name" />
     <h2>{{ name }}</h2>
     <span>{{ species }}</span>
-  </Lazily>
+  </Awaited>
 </template>
 ```
 
@@ -100,11 +100,11 @@ Using component's method:
 
 ```vue
 <template>
-  <Lazily :action="getCharacter" #default="{ data: { image, name, species } }">
+  <Awaited :action="getCharacter" #default="{ data: { image, name, species } }">
     <img :src="image" :alt="name" />
     <h2>{{ name }}</h2>
     <span>{{ species }}</span>
-  </Lazily>
+  </Awaited>
 </template>
 
 <script>
@@ -124,7 +124,7 @@ Using slots:
 
 ```vue
 <template>
-  <Lazily action="https://rickandmortyapi.com/api/character/1">
+  <Awaited action="https://rickandmortyapi.com/api/character/1">
     <template #pending>Loading...</template>
     <template #error="{ error }">{{ error.message }}</template>
     <template #default="{ data: { image, name, species } }">
@@ -132,7 +132,7 @@ Using slots:
       <h2>{{ name }}</h2>
       <span>{{ species }}</span>
     </template>
-  </Lazily>
+  </Awaited>
 </template>
 ```
 
@@ -142,7 +142,7 @@ Using slots:
 
 | Name    | Description                             | Type     |
 | ------- | --------------------------------------- | -------- |
-| `name`  | Component name. Defaults to `Lazily`    | `String` |
+| `name`  | Component name. Defaults to `Awaited`    | `String` |
 | `props` | Props which will be passed to component | `Object` |
 
 ### props
