@@ -34,13 +34,13 @@ VueLazily solves these problems by loading data only when it becomes visible and
 ## Installation
 
 ```sh
-yarn add vue-lazily
+yarn add vue-awaited
 ```
 
 or
 
 ```sh
-npm i vue-lazily
+npm i vue-awaited
 ```
 
 ## Usage
@@ -51,7 +51,7 @@ npm i vue-lazily
 // Vue 2
 
 import Vue from 'vue'
-import VueLazily from 'vue-lazily'
+import VueLazily from 'vue-awaited'
 
 Vue.use(VueLazily, { /* options */ })
 
@@ -59,7 +59,7 @@ Vue.use(VueLazily, { /* options */ })
 // Vue 3
 
 import { createApp } from 'vue'
-import VueLazily from 'vue-lazily'
+import VueLazily from 'vue-awaited'
 
 const app = createApp(App)
 app.use(VueLazily, { /* options */ }))
@@ -69,7 +69,7 @@ app.use(VueLazily, { /* options */ }))
 
 ```vue
 <script>
-import { Lazily } from 'vue-lazily'
+import { Lazily } from 'vue-awaited'
 
 export default {
   components: {
