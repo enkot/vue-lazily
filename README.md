@@ -1,7 +1,7 @@
 <p align="center">
   <img alt="Logo" src="https://github.com/enkot/vue-awaited/blob/master/static/logo.png?raw=true" height="120"/>
   <h1 align="center">
-    <b>Vue<font color="10b981">Lazily</font></b>
+    <b>Vue<font color="10b981">Awaited</font></b>
   </h1>
 </p>
 
