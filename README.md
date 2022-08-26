@@ -1,7 +1,7 @@
 <p align="center">
-  <img alt="Logo" src="https://github.com/enkot/vue-awaited/blob/master/static/logo.png?raw=true" height="120"/>
+  <img alt="Logo" src="https://github.com/enkot/vue-Lazily/blob/master/static/logo.png?raw=true" height="120"/>
   <h1 align="center">
-    <b>Vue<font color="10b981">Awaited</font></b>
+    <b>Vue<font color="10b981">Lazily</font></b>
   </h1>
 </p>
 
@@ -23,6 +23,8 @@ The easiest way to lazy load your content.
 - 📍 Slots for loading and error states
 - No dependencies.
 
+> Starting from v2 The minimum supported Vue version - 2.7. If you use older version of Vue, please install previous version of this library - ^1.0.0.
+
 ## Why does this library exist?
 
 Usually, on big pages, rendering all content at once can cause performance problems with big "Time to Interactive" or "Largest Contentful Paint" time, or even bigger problem if SSR used - server should render all the content before user could see the page.
@@ -34,13 +36,13 @@ VueLazily solves these problems by loading data only when it becomes visible and
 ## Installation
 
 ```sh
-yarn add vue-awaited
+yarn add vue-lazily
 ```
 
 or
 
 ```sh
-npm i vue-awaited
+npm i vue-lazily
 ```
 
 ## Usage
@@ -51,29 +53,29 @@ npm i vue-awaited
 // Vue 2
 
 import Vue from 'vue'
-import VueAwaited from 'vue-awaited'
+import VueLazily from 'vue-lazily'
 
-Vue.use(VueAwaited, { /* options */ })
+Vue.use(VueLazily, { /* options */ })
 
 
 // Vue 3
 
 import { createApp } from 'vue'
-import VueAwaited from 'vue-awaited'
+import VueLazily from 'vue-lazily'
 
 const app = createApp(App)
-app.use(VueAwaited, { /* options */ }))
+app.use(VueLazily, { /* options */ }))
 ```
 
 ### Local
 
 ```vue
 <script>
-import { Awaited } from 'vue-awaited'
+import { Lazily } from 'vue-lazily'
 
 export default {
   components: {
-    Awaited
+    Lazily
   }
 }
 </script>
@@ -85,14 +87,14 @@ Using url string:
 
 ```vue
 <template>
-  <Awaited
+  <Lazily
     action="https://rickandmortyapi.com/api/character/1"
     #default="{ data: { image, name, species } }"
   >
     <img :src="image" :alt="name" />
     <h2>{{ name }}</h2>
     <span>{{ species }}</span>
-  </Awaited>
+  </Lazily>
 </template>
 ```
 
@@ -100,11 +102,11 @@ Using component's method:
 
 ```vue
 <template>
-  <Awaited :action="getCharacter" #default="{ data: { image, name, species } }">
+  <Lazily :action="getCharacter" #default="{ data: { image, name, species } }">
     <img :src="image" :alt="name" />
     <h2>{{ name }}</h2>
     <span>{{ species }}</span>
-  </Awaited>
+  </Lazily>
 </template>
 
 <script>
@@ -124,7 +126,7 @@ Using slots:
 
 ```vue
 <template>
-  <Awaited action="https://rickandmortyapi.com/api/character/1">
+  <Lazily action="https://rickandmortyapi.com/api/character/1">
     <template #pending>Loading...</template>
     <template #error="{ error }">{{ error.message }}</template>
     <template #default="{ data: { image, name, species } }">
@@ -132,7 +134,7 @@ Using slots:
       <h2>{{ name }}</h2>
       <span>{{ species }}</span>
     </template>
-  </Awaited>
+  </Lazily>
 </template>
 ```
 
@@ -142,7 +144,7 @@ Using slots:
 
 | Name    | Description                             | Type     |
 | ------- | --------------------------------------- | -------- |
-| `name`  | Component name. Defaults to `Awaited`    | `String` |
+| `name`  | Component name. Defaults to `Lazily`    | `String` |
 | `props` | Props which will be passed to component | `Object` |
 
 ### props
@@ -164,15 +166,16 @@ All of these props could be passed to global config as well as directly to compo
 
 All slots can be used as _scoped_ or regular slots.
 
-| Name      | Description                                                             | Scope                                       |
-| --------- | ----------------------------------------------------------------------- | ------------------------------------------- |
-| `pending` | Content to display while the action is pending and before delay is over | previously resolved `data`, `observed` flag |
-| _default_ | Content to display once the action has been successfully resolved       | resolved `data`                             |
-| `error`   | Content to display if the action is rejected                            | throwed `error`                             |
+| Name       | Description                                                                    | Scope                                       |
+| ---------  | -----------------------------------------------------------------------        | ------------------------------------------- |
+| `pending`  | Content to display while the action is pending and before delay is over        | previously resolved `data`, `observed` flag |
+| _default_  | Content to display once the action has been successfully resolved              | resolved `data`                             |
+| `error`    | Content to display if the action is rejected                                   | throwed `error`                             |
+| `combined` | Combines all slots to provide a granular control over what should be displayed                           | `context` object                            |
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/enkot/vue-awaited/issues).
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/enkot/vue-Lazily/issues).
 
 ## Show your support
 
