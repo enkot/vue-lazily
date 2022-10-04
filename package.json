@@ -1,7 +1,7 @@
 {
   "name": "vue-lazily",
   "description": "The easiest way to lazy load your content",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "keywords": [
     "vue",
     "lazy",
@@ -27,6 +27,6 @@
     "microbundle": "^0.15.0"
   },
   "peerDependencies": {
-    "vue": "^2.7.0"
+    "vue": "^2.7.0 || >=3.0.0"
   }
 }
